@@ -162,3 +162,48 @@ test('admin can access page edit form with two-tier layout', function () {
     $this->get('/admin/activity-logs')->assertSuccessful();
     $this->get('/admin/css-sandbox-editor')->assertSuccessful();
 });
+
+test('redirect301 cache is populated and automatically flushed on change', function () {
+    Redirect301::clearCache();
+
+    $redirect = Redirect301::create([
+        'url_origen' => '/ruta-vieja-oferta',
+        'url_destino' => '/promociones',
+        'status' => true,
+    ]);
+
+    $cached = Redirect301::getCachedMap();
+    expect($cached)->toHaveKey('/ruta-vieja-oferta');
+    expect($cached['/ruta-vieja-oferta'])->toBe('/promociones');
+
+    $redirect->update(['url_destino' => '/sucursales']);
+    $newCached = Redirect301::getCachedMap();
+    expect($newCached['/ruta-vieja-oferta'])->toBe('/sucursales');
+
+    $redirect->delete();
+    $afterDelete = Redirect301::getCachedMap();
+    expect($afterDelete)->not->toHaveKey('/ruta-vieja-oferta');
+});
+
+test('pages can extend alternative templates like landing layout', function () {
+    $page = Page::create([
+        'titulo' => 'Campaña Corporativa B2B',
+        'slug' => 'campana-b2b',
+        'plantilla' => 'landing',
+        'status' => true,
+        'contenido_json_bloques' => [
+            [
+                'type' => 'banner_cta',
+                'data' => [
+                    'titulo' => 'Únete a la Red Mayorista Marcsol',
+                    'boton_texto' => 'Contactar Asesor B2B',
+                ],
+            ],
+        ],
+    ]);
+
+    $response = $this->get('/campana-b2b');
+    $response->assertStatus(200);
+    $response->assertSee('Únete a la Red Mayorista Marcsol');
+    $response->assertSee('Contactar Asesor');
+});

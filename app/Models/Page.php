@@ -18,6 +18,7 @@ class Page extends Model
     protected $fillable = [
         'titulo',
         'slug',
+        'plantilla',
         'contenido_json_bloques',
         'status',
         'meta_title',

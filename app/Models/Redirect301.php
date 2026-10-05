@@ -39,4 +39,31 @@ class Redirect301 extends Model
     {
         return $query->where('status', true);
     }
+
+    protected static function booted(): void
+    {
+        static::saved(function () {
+            static::clearCache();
+        });
+
+        static::deleted(function () {
+            static::clearCache();
+        });
+
+        static::restored(function () {
+            static::clearCache();
+        });
+    }
+
+    public static function getCachedMap(): array
+    {
+        return \Illuminate\Support\Facades\Cache::rememberForever('active_301_redirects', function () {
+            return static::active()->pluck('url_destino', 'url_origen')->toArray();
+        });
+    }
+
+    public static function clearCache(): void
+    {
+        \Illuminate\Support\Facades\Cache::forget('active_301_redirects');
+    }
 }

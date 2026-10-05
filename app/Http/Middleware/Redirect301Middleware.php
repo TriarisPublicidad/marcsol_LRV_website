@@ -19,18 +19,19 @@ class Redirect301Middleware
             $path = '/' . ltrim($request->path(), '/');
             $fullUri = $request->getRequestUri();
 
-            $redirect = Redirect301::active()
-                ->where(function ($query) use ($path, $fullUri) {
-                    $query->where('url_origen', $path)
-                        ->orWhere('url_origen', $fullUri);
-                })
-                ->first();
+            $map = Redirect301::getCachedMap();
 
-            if ($redirect) {
-                // Registrar hit
-                $redirect->increment('hits');
+            $destination = $map[$path] ?? $map[$fullUri] ?? null;
 
-                return redirect()->to($redirect->url_destino, 301);
+            if ($destination) {
+                // Registrar hit sin bloquear
+                try {
+                    Redirect301::where('url_origen', $path)->orWhere('url_origen', $fullUri)->increment('hits');
+                } catch (\Throwable $e) {
+                    // Fallback silencioso
+                }
+
+                return redirect()->to($destination, 301);
             }
         }
 

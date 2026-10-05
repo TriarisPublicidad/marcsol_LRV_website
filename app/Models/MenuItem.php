@@ -37,6 +37,19 @@ class MenuItem extends Model
             ->dontLogEmptyChanges();
     }
 
+    protected static function booted(): void
+    {
+        static::saved(function () {
+            \Illuminate\Support\Facades\Cache::forget('site_menus_header');
+            \Illuminate\Support\Facades\Cache::forget('site_menus_footer');
+        });
+
+        static::deleted(function () {
+            \Illuminate\Support\Facades\Cache::forget('site_menus_header');
+            \Illuminate\Support\Facades\Cache::forget('site_menus_footer');
+        });
+    }
+
     public function parent(): BelongsTo
     {
         return $this->belongsTo(MenuItem::class, 'parent_id');

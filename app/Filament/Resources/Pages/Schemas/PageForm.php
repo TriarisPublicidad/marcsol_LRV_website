@@ -159,6 +159,15 @@ class PageForm
                                 ->label('Página Activa / Publicada')
                                 ->helperText('Al estar activa será accesible por los usuarios públicos.')
                                 ->default(true),
+
+                            Select::make('plantilla')
+                                ->label('Plantilla de Diseño (Layout)')
+                                ->options([
+                                    'app' => 'Plantilla Corporativa Estándar (Header + Footer)',
+                                    'landing' => 'Plantilla de Campaña / Landing (Cabecera y Pie Reducidos)',
+                                ])
+                                ->default('app')
+                                ->required(),
                         ]),
 
                     Section::make('Optimización SEO / AEO')

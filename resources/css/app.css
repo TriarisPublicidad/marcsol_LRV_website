@@ -2,8 +2,31 @@
 
 @source '../../vendor/laravel/framework/src/Illuminate/Pagination/resources/views/*.blade.php';
 @source '../../storage/framework/views/*.php';
+@source '../views/**/*.blade.php';
 
 @theme {
     --font-sans: 'Instrument Sans', ui-sans-serif, system-ui, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji',
         'Segoe UI Symbol', 'Noto Color Emoji';
+    --font-sans: 'Inter', ui-sans-serif, system-ui, sans-serif;
 }
+
+:root {
+    --primary-color: #0F4C81;
+    --secondary-color: #F58220;
+    --accent-color: #2ECC71;
+}
+
+.bg-marcsol-primary { background-color: var(--primary-color) !important; }
+.bg-marcsol-secondary { background-color: var(--secondary-color) !important; }
+.bg-marcsol-accent { background-color: var(--accent-color) !important; }
+
+.text-marcsol-primary { color: var(--primary-color) !important; }
+.text-marcsol-secondary { color: var(--secondary-color) !important; }
+.text-marcsol-accent { color: var(--accent-color) !important; }
+
+.border-marcsol-primary { border-color: var(--primary-color) !important; }
+.border-marcsol-secondary { border-color: var(--secondary-color) !important; }
+.border-marcsol-accent { border-color: var(--accent-color) !important; }
+
+.hover\:bg-marcsol-primary:hover { background-color: var(--primary-color) !important; }
+.hover\:bg-marcsol-secondary:hover { background-color: var(--secondary-color) !important; }

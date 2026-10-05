@@ -1,0 +1,18 @@
+﻿Lee atentamente el archivo `INSTRUCCIONES_IA.md`.
+Continuando con el proyecto, ejecuta la FASE 2 correspondiente al Panel Administrativo:
+
+
+1. Instala y configura FilamentPHP v3 para el panel de administración (`/admin`).
+2. Configura el sistema de Roles y Permisos con Spatie:
+   - Crear roles: `SuperAdmin`, `Administrador`, `Supervisor`, `Operador`.
+   - Protege los recursos y navegación del panel según las políticas de autorización (`Policies`).
+3. Construye los recursos CRUD en FilamentPHP con tablas (paginación, filtros por status, búsqueda) y formularios estructurados para:
+   - **Promociones:** Incluyendo un switch destacado para "Promoción del Día" y rango de fechas de vigencia.
+   - **Eventos:** Con selector de fechas y ubicación.
+   - **Sucursales:** Con campos de dirección y coordenadas GPS.
+   - **Usuarios:** Gestión de cuentas y asignación de roles Spatie.
+4. Aplica el comportamiento de `SoftDeletes` en Filament: las acciones de eliminar solo deben inactivar el registro (`deleted_at`). Agrega un filtro opcional para ver papelera/inactivos.
+5. Registra las acciones de edición e inactivación automáticamente en Spatie Activitylog.
+
+
+Asegúrate de que la interfaz sea rápida, limpia y totalmente en español.

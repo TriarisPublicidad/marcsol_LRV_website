@@ -1,0 +1,25 @@
+﻿Lee atentamente el archivo `INSTRUCCIONES_IA.md`.
+Ejecuta la FASE 4 para la construcción del Sitio Web Público (Frontend):
+
+
+1. **Maquetación Blade + Tailwind CSS + Alpine.js:**
+   - Crea la plantilla maestra `layouts/app.blade.php`.
+   - Inyecta dinámicamente los colores de la base de datos en `:root` (`--primary-color`, `--secondary-color`).
+   - Inyecta los códigos de Data Tracking (GTM, Meta Pixel, Clarity) según la configuración activa.
+2. **Desarrollo de Páginas Públicas:**
+   - **Home:** Hero Carousel de promociones, Banner "Promoción del Día", Próximos Eventos y vista rápida de Sucursales.
+   - **Nosotros:** Historia, Misión, Visión y Compromiso en Quevedo.
+   - **Promociones:** Grid interactivo con filtros por categoría y sucursal. Vista detalle de la promoción con botón para descargar volante/PDF.
+   - **Eventos:** Lista/Calendario de activaciones y vista detalle.
+   - **Sucursales:** Directorio con mapa interactivo y ficha de contacto.
+   - **Contacto:** Formulario protegido con CSRF y Throttling.
+3. **Renderizado de Páginas CMS Dinámicas:**
+   - Configura la ruta comodín `Route::get('/{slug}')` en `routes/web.php` para interpretar las páginas creadas en el Admin y renderizar sus bloques dinámicos.
+4. **Animaciones Fluidas:**
+   - Implementa `Alpine.js Intersect` y transiciones ligeras para efectos de entrada al hacer scroll (sin sobrecargar el rendimiento).
+5. **SEO/AEO y Redirecciones:**
+   - Inyecta los metadatos OpenGraph y bloques JSON-LD Schema (`LocalBusiness` / `Supermarket`) en cada vista.
+   - Crea un Middleware de Redirecciones 301 que consulte la tabla `redirects_301` antes de lanzar un error 404.
+
+
+El diseño debe ser responsivo, moderno, ultra rápido y adaptado al comercio retail.

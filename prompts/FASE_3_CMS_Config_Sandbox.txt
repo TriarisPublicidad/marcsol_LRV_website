@@ -1,0 +1,20 @@
+﻿Lee atentamente el archivo `INSTRUCCIONES_IA.md`.
+Ejecuta la FASE 3 enfocada en la gestión de contenidos avanzadas y configuraciones:
+
+
+1. **Constructor de Páginas CMS:** En Filament, crea el recurso `PageResource` utilizando un Builder por bloques JSON (Bloque Hero, Bloque Texto/Imagen, Bloque Grid Promociones, Bloque FAQs).
+2. **Módulo de Menús:** Implementa un gestor para ordenar la navegación del Header y Footer.
+3. **Página de Configuración Global:** Crea una sección de ajustes en el Admin con pestañas:
+   - **Branding:** Logo, Favicon, Colores Primario y Secundario (HEX).
+   - **Data Tracking:** Campos sanitizados para Google Tag Manager ID, Meta Pixel ID, TikTok Pixel ID, Microsoft Clarity ID y caja para Scripts Personalizados (`<head>` y `<body>`).
+   - **SEO Global:** Meta Título por defecto, Meta Descripción, Imagen OpenGraph y Schema.org tipo `Supermarket`.
+   - **Redirecciones 301:** CRUD para mapear URLs antiguas de WordPress hacia el nuevo sitio.
+4. **Editor de Archivos Sandbox (Solo SuperAdmin / Administrador):**
+   - Crea una vista administrativa restringida que permita editar ÚNICAMENTE el archivo `public/css/custom-override.css`.
+   - Bloquea estrictamente cualquier intento de navegación fuera de esta ruta (Sandboxing).
+5. **Seguridad en Uploads:**
+   - Configura el servicio de almacenamiento para que las imágenes subidas se procesen con `Intervention Image`, se conviertan a formato WebP, se renombran con UUID y se almacenen en `storage/app/public/`.
+   - Crea el archivo `.htaccess` de protección dentro de storage.
+
+
+Genera todo el código necesario respetando las normas de seguridad.

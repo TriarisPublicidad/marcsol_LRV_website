@@ -1,0 +1,16 @@
+﻿# ==============================================================================
+# MARCSOL - Supermercado Corporativo
+# RaÃ­z .htaccess para entornos cPanel / Hostinger (Donde public_html aloja la raÃ­z)
+# ==============================================================================
+
+<IfModule mod_rewrite.c>
+    RewriteEngine On
+
+    # 1. Proteger archivos y directorios sensibles contra acceso directo
+    RewriteRule ^(\.env|\.git|composer\.(json|lock)|package\.(json|lock)|phpunit\.xml|vite\.config\.js) - [F,L,NC]
+    RewriteRule ^(app|bootstrap|config|database|resources|routes|storage|tests)/ - [F,L,NC]
+
+    # 2. Redirigir todo el trÃ¡fico a la carpeta public/ manteniendo la URL limpia
+    RewriteCond %{REQUEST_URI} !^/public/
+    RewriteRule ^(.*)$ public/$1 [L]
+</IfModule>

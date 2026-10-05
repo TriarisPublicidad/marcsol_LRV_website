@@ -1,0 +1,18 @@
+﻿Lee atentamente el archivo `INSTRUCCIONES_IA.md`.
+Ejecuta la FASE 5 final para preparar la puesta en producción:
+
+
+1. Configura el archivo `public/.htaccess` optimizado para servidores Apache/LiteSpeed en cPanel/Hostinger, asegurando que la raíz apunte a `/public` y activando compresión GZIP y caché de assets.
+2. Prepara las rutas de comandos de optimización en Laravel:
+   - `php artisan config:cache`
+   - `php artisan route:cache`
+   - `php artisan view:cache`
+   - `php artisan storage:link`
+3. Genera el script de compilación de assets para ejecutarse en local: `npm run build`.
+4. Entrega una **Guía de Despliegue Paso a Paso** para el SysAdmin que detalle:
+   - Cómo subir el proyecto a cPanel/Hostinger vía Git o SSH/FTP.
+   - Cómo configurar la base de datos MySQL en producción y ejecutar las migraciones/seeders.
+   - Cómo realizar modificaciones de emergencia en producción (uso de `custom-override.css` y comandos SQL para restaurar registros `SoftDeletes`).
+
+
+Entrega la documentación final clara y estructurada.

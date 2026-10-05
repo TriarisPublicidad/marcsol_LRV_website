@@ -12,13 +12,13 @@ use UnitEnum;
 
 class ManageSettings extends Page
 {
-    protected static string|UnitEnum|null $navigationGroup = 'ConfiguraciÃ³n & SEO';
+    protected static string|UnitEnum|null $navigationGroup = 'Configuración & SEO';
 
     protected static string|BackedEnum|null $navigationIcon = Heroicon::OutlinedCog6Tooth;
 
     protected static ?string $navigationLabel = 'Ajustes Globales';
 
-    protected static ?string $title = 'ConfiguraciÃ³n General del Sitio';
+    protected static ?string $title = 'Configuración General del Sitio';
 
     protected static ?int $navigationSort = 1;
 

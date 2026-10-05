@@ -11,7 +11,7 @@ use UnitEnum;
 
 class CssSandboxEditor extends Page
 {
-    protected static string|UnitEnum|null $navigationGroup = 'ConfiguraciÃ³n & SEO';
+    protected static string|UnitEnum|null $navigationGroup = 'Configuración & SEO';
 
     protected static string|BackedEnum|null $navigationIcon = Heroicon::OutlinedCodeBracket;
 

@@ -54,3 +54,24 @@ test('unauthenticated users are redirected to filament login', function () {
     $response = $this->get('/admin');
     $response->assertRedirect('/admin/login');
 });
+
+test('authenticated admin user can access filament dashboard and resource pages', function () {
+    $role = Role::create(['name' => 'SuperAdmin']);
+    $user = User::factory()->create([
+        'email' => 'admin@marcsol.com.ec',
+    ]);
+    $user->assignRole($role);
+
+    $this->actingAs($user);
+
+    $this->get('/admin')->assertSuccessful();
+    $this->get('/admin/branches')->assertSuccessful();
+    $this->get('/admin/categories')->assertSuccessful();
+    $this->get('/admin/promotions')->assertSuccessful();
+    $this->get('/admin/events')->assertSuccessful();
+    $this->get('/admin/menu-items')->assertSuccessful();
+    $this->get('/admin/pages')->assertSuccessful();
+    $this->get('/admin/redirect301s')->assertSuccessful();
+    $this->get('/admin/users')->assertSuccessful();
+});
+

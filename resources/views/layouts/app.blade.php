@@ -178,24 +178,28 @@
                 <!-- Enlaces Desktop (desde tabla menu_items) -->
                 <nav class="hidden lg:flex items-center space-x-1">
                     @forelse($headerMenus as $item)
-                        @if($item->children->count() > 0)
-                            <div class="relative" x-data="{ open: false }" @click.outside="open = false">
-                                <button @click="open = !open" class="px-4 py-2 text-sm font-semibold text-gray-700 hover:text-marcsol-primary rounded-lg transition-colors flex items-center gap-1">
-                                    {{ $item->titulo }}
-                                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/></svg>
-                                </button>
-                                <div x-show="open" x-transition class="absolute left-0 mt-2 w-48 bg-white rounded-xl shadow-lg border border-gray-100 py-2 z-50">
-                                    @foreach($item->children as $child)
-                                        <a href="{{ $child->url }}" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-50 hover:text-marcsol-primary">
-                                            {{ $child->titulo }}
-                                        </a>
-                                    @endforeach
+                        @if(is_object($item) && isset($item->titulo))
+                            @if(isset($item->children) && is_iterable($item->children) && count($item->children) > 0)
+                                <div class="relative" x-data="{ open: false }" @click.outside="open = false">
+                                    <button @click="open = !open" class="px-4 py-2 text-sm font-semibold text-gray-700 hover:text-marcsol-primary rounded-lg transition-colors flex items-center gap-1">
+                                        {{ $item->titulo }}
+                                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/></svg>
+                                    </button>
+                                    <div x-show="open" x-transition class="absolute left-0 mt-2 w-48 bg-white rounded-xl shadow-lg border border-gray-100 py-2 z-50">
+                                        @foreach($item->children as $child)
+                                            @if(is_object($child) && isset($child->titulo))
+                                                <a href="{{ $child->url }}" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-50 hover:text-marcsol-primary">
+                                                    {{ $child->titulo }}
+                                                </a>
+                                            @endif
+                                        @endforeach
+                                    </div>
                                 </div>
-                            </div>
-                        @else
-                            <a href="{{ $item->url }}" class="px-4 py-2 text-sm font-semibold rounded-lg transition-colors {{ request()->is(trim($item->url, '/')) || (request()->is('/') && $item->url === '/') ? 'text-marcsol-primary bg-blue-50/70' : 'text-gray-700 hover:text-marcsol-primary hover:bg-gray-50' }}">
-                                {{ $item->titulo }}
-                            </a>
+                            @else
+                                <a href="{{ $item->url }}" class="px-4 py-2 text-sm font-semibold rounded-lg transition-colors {{ request()->is(trim($item->url, '/')) || (request()->is('/') && $item->url === '/') ? 'text-marcsol-primary bg-blue-50/70' : 'text-gray-700 hover:text-marcsol-primary hover:bg-gray-50' }}">
+                                    {{ $item->titulo }}
+                                </a>
+                            @endif
                         @endif
                     @empty
                         <a href="{{ url('/') }}" class="px-4 py-2 text-sm font-semibold text-gray-700 hover:text-marcsol-primary">Inicio</a>
@@ -227,9 +231,11 @@
         <!-- Menú Móvil Desplegable -->
         <div x-show="mobileMenuOpen" x-transition class="lg:hidden bg-white border-b border-gray-200 px-4 pt-2 pb-6 space-y-2">
             @foreach($headerMenus as $item)
-                <a href="{{ $item->url }}" @click="mobileMenuOpen = false" class="block px-3 py-2 rounded-md text-base font-medium text-gray-700 hover:bg-gray-50 hover:text-marcsol-primary">
-                    {{ $item->titulo }}
-                </a>
+                @if(is_object($item) && isset($item->titulo))
+                    <a href="{{ $item->url }}" @click="mobileMenuOpen = false" class="block px-3 py-2 rounded-md text-base font-medium text-gray-700 hover:bg-gray-50 hover:text-marcsol-primary">
+                        {{ $item->titulo }}
+                    </a>
+                @endif
             @endforeach
             <div class="pt-4 border-t border-gray-100">
                 <a href="{{ url('/promociones') }}" class="block text-center w-full px-4 py-3 rounded-xl font-bold bg-marcsol-secondary text-white shadow">
@@ -282,11 +288,13 @@
                     </h4>
                     <ul class="space-y-2.5 text-sm">
                         @foreach($footerMenus as $item)
-                            <li>
-                                <a href="{{ $item->url }}" class="hover:text-amber-400 transition-colors">
-                                    {{ $item->titulo }}
-                                </a>
-                            </li>
+                            @if(is_object($item) && isset($item->titulo))
+                                <li>
+                                    <a href="{{ $item->url }}" class="hover:text-amber-400 transition-colors">
+                                        {{ $item->titulo }}
+                                    </a>
+                                </li>
+                            @endif
                         @endforeach
                     </ul>
                 </div>

@@ -23,19 +23,14 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot(): void
     {
-        View::composer('layouts.app', function ($view) {
+        View::composer('layouts.*', function ($view) {
             try {
                 $settings = Cache::remember('site_settings', 3600, function () {
                     return Setting::pluck('valor', 'clave')->toArray();
                 });
 
-                $headerMenus = Cache::remember('site_menus_header', 3600, function () {
-                    return MenuItem::header()->with('children')->get();
-                });
-
-                $footerMenus = Cache::remember('site_menus_footer', 3600, function () {
-                    return MenuItem::footer()->get();
-                });
+                $headerMenus = MenuItem::header()->with('children')->get();
+                $footerMenus = MenuItem::footer()->get();
 
                 $view->with('settings', $settings)
                     ->with('headerMenus', $headerMenus)

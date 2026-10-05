@@ -207,3 +207,53 @@ test('pages can extend alternative templates like landing layout', function () {
     $response->assertSee('Únete a la Red Mayorista Marcsol');
     $response->assertSee('Contactar Asesor');
 });
+
+test('dynamic page nosotros renders successfully with blocks and header navigation', function () {
+    $parentMenu = MenuItem::create([
+        'titulo' => 'Compañía',
+        'url' => '#',
+        'orden' => 1,
+        'ubicacion' => 'header',
+        'status' => true,
+    ]);
+
+    MenuItem::create([
+        'titulo' => 'Nuestra Historia',
+        'url' => '/nosotros',
+        'orden' => 1,
+        'ubicacion' => 'header',
+        'parent_id' => $parentMenu->id,
+        'status' => true,
+    ]);
+
+    $page = Page::create([
+        'titulo' => 'Nosotros',
+        'slug' => 'nosotros',
+        'status' => true,
+        'plantilla' => 'app',
+        'contenido_json_bloques' => [
+            [
+                'type' => 'hero',
+                'data' => [
+                    'titulo' => 'Nacidos en Quevedo para Servir al Ecuador',
+                    'subtitulo' => 'Más de una década brindando calidad y ahorro real.',
+                ],
+            ],
+            [
+                'type' => 'texto_imagen',
+                'data' => [
+                    'titulo' => 'Nuestra Historia y Misión',
+                    'contenido' => 'Marcsol nació como un emprendimiento local en el corazón comercial de Quevedo.',
+                ],
+            ],
+        ],
+    ]);
+
+    $response = $this->get('/nosotros');
+    $response->assertStatus(200);
+    $response->assertSee('Nacidos en Quevedo para Servir al Ecuador');
+    $response->assertSee('Nuestra Historia y Misión');
+    $response->assertSee('Compañía');
+    $response->assertSee('Nuestra Historia');
+});
+

@@ -1,18 +1,43 @@
-﻿Lee atentamente el archivo `INSTRUCCIONES_IA.md`.
-Ejecuta la FASE 5 final para preparar la puesta en producción:
+Lee atentamente el archivo `INSTRUCCIONES_IA.md`.
+Ejecuta la FASE 5 final para asegurar la calidad de código, la preparación para servidores de producción (Apache/LiteSpeed en cPanel o Hostinger) y la política de respaldo:
 
+1. **Suite de Pruebas Automatizadas (Pest / PHPUnit):**
+   Implementa una batería de pruebas que valide todas las capas del sistema con 100% de tests en verde (`php artisan test`):
+   - Rutas públicas principales que retornen código HTTP 200.
+   - Verificación de comportamiento estricto de `SoftDeletes` en modelos.
+   - Redirecciones 301 y refresco de caché ante cambios.
+   - Seguridad y roles en el panel administrativo.
+   - Renderizado del Constructor de Bloques modular en portada y páginas dinámicas.
+   - Soporte de plantillas múltiples (`landing` vs `app`).
+   - Idioma y localización activa en español con etiquetas correctas.
 
-1. Configura el archivo `public/.htaccess` optimizado para servidores Apache/LiteSpeed en cPanel/Hostinger, asegurando que la raíz apunte a `/public` y activando compresión GZIP y caché de assets.
-2. Prepara las rutas de comandos de optimización en Laravel:
+2. **Configuración del Servidor Web (Apache / LiteSpeed):**
+   - Configura el archivo `public/.htaccess` optimizado para servidores en cPanel/Hostinger:
+     * Enrutamiento seguro hacia `/public/index.php`.
+     * Activación de compresión GZIP (`mod_deflate`).
+     * Cabeceras de expiración y caché de navegador (`mod_expires` / `mod_headers`) para imágenes WebP/SVG y bundles compilados.
+     * Bloqueo de archivos sensibles y carpetas ocultas (`.env`, `.git`).
+   - Si el hosting no permite modificar el DocumentRoot, suministra un `.htaccess` en la raíz para redirigir el tráfico hacia `/public`.
+
+3. **Compilación de Assets para Producción:**
+   - Ejecuta la compilación de assets con Vite: `npm run build`.
+   - Asegura que el directorio `public/build/` quede versionado para despliegue directo en servidores sin Node.js.
+
+4. **Pipeline de Optimización en Producción:**
+   Verifica y documenta los comandos de consola requeridos en producción:
+   - `php artisan storage:link`
+   - `php artisan optimize:clear`
    - `php artisan config:cache`
    - `php artisan route:cache`
    - `php artisan view:cache`
-   - `php artisan storage:link`
-3. Genera el script de compilación de assets para ejecutarse en local: `npm run build`.
-4. Entrega una **Guía de Despliegue Paso a Paso** para el SysAdmin que detalle:
-   - Cómo subir el proyecto a cPanel/Hostinger vía Git o SSH/FTP.
-   - Cómo configurar la base de datos MySQL en producción y ejecutar las migraciones/seeders.
-   - Cómo realizar modificaciones de emergencia en producción (uso de `custom-override.css` y comandos SQL para restaurar registros `SoftDeletes`).
 
+5. **Política de Control de Versiones y Respaldo (Git):**
+   - Mantén `.env.example` actualizado con los valores predeterminados sin filtrar credenciales privadas.
+   - Crea una etiqueta anotada (tag semántico) para fijar el hito de versión estable:
+     `git tag -a "v1.0.0-stable" -m "Hito de versión estable"`
+   - Crea una rama de respaldo dedicada para congelar el estado del desarrollo:
+     `git branch "backup/YYYY-MM-DD-stable"`
+   - Sincroniza las ramas y etiquetas con el repositorio remoto (`git push origin --tags`).
 
-Entrega la documentación final clara y estructurada.
+6. **Guía de Despliegue Paso a Paso:**
+   Entrega una `GUIA_DESPLIEGUE.md` clara para el SysAdmin que detalle el proceso de subida vía Git o SSH/FTP, configuración de la base de datos MySQL, ejecución de migraciones y seeders, y procedimientos de contingencia con `custom-override.css`.

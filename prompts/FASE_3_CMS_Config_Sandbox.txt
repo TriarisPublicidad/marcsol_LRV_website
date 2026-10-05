@@ -1,20 +1,34 @@
-﻿Lee atentamente el archivo `INSTRUCCIONES_IA.md`.
-Ejecuta la FASE 3 enfocada en la gestión de contenidos avanzadas y configuraciones:
+Lee atentamente el archivo `INSTRUCCIONES_IA.md`.
+Ejecuta la FASE 3 enfocada en la gestión de contenidos avanzada, configuraciones y utilidades de personalización segura:
 
+1. **Constructor de Páginas CMS (Page Builder):**
+   En `PageResource`, implementa una estructura ergonómica de edición organizada en dos niveles:
+   - **Cabecera Superior (100% ancho):**
+     * Campo de `titulo` principal y `slug` auto-generado.
+     * Barra unificada de acciones: botones de **Guardar Cambios**, **Mover a Papelera (Borrar)** y **Restaurar** (cuando el registro se encuentra en papelera), junto con un botón para abrir la URL pública en pestaña nueva.
+   - **Cuerpo en Dos Columnas:**
+     * **Columna Izquierda (Ancho Principal ~70%):** Constructor de bloques (`Builder`) JSON interactivo con soporte de reordenamiento arrastrable (`reorderable`), colapso y clonación. Debe incluir como mínimo los bloques: Hero, Texto/Imagen, Grid de Promociones (con switch para solo destacadas), Eventos, Sucursales, Beneficios, FAQs (acordeón dinámico), Banner CTA y Promoción del Día.
+     * **Columna Derecha (Inspector Lateral ~30%):** Selector de Plantilla de Diseño (`plantilla` con opciones como 'app' o 'landing'), switch de Status activo y campos de metadatos SEO (Meta Título, Meta Descripción, Imagen OpenGraph y Schema JSON-LD).
 
-1. **Constructor de Páginas CMS:** En Filament, crea el recurso `PageResource` utilizando un Builder por bloques JSON (Bloque Hero, Bloque Texto/Imagen, Bloque Grid Promociones, Bloque FAQs).
-2. **Módulo de Menús:** Implementa un gestor para ordenar la navegación del Header y Footer.
-3. **Página de Configuración Global:** Crea una sección de ajustes en el Admin con pestañas:
-   - **Branding:** Logo, Favicon, Colores Primario y Secundario (HEX).
-   - **Data Tracking:** Campos sanitizados para Google Tag Manager ID, Meta Pixel ID, TikTok Pixel ID, Microsoft Clarity ID y caja para Scripts Personalizados (`<head>` y `<body>`).
-   - **SEO Global:** Meta Título por defecto, Meta Descripción, Imagen OpenGraph y Schema.org tipo `Supermarket`.
-   - **Redirecciones 301:** CRUD para mapear URLs antiguas de WordPress hacia el nuevo sitio.
-4. **Editor de Archivos Sandbox (Solo SuperAdmin / Administrador):**
+2. **Módulo de Menús:**
+   Implementa `MenuItemResource` para ordenar la navegación del Header y Footer con soporte para jerarquía padre-hijo (submenús desplegables) y orden numérico.
+
+3. **Página de Configuración Global:**
+   Crea una sección de ajustes en el Admin con pestañas nativas organizadas:
+   - **Branding:** Logo, Favicon y selectores de color con paleta y campo HEX para Color Primario, Secundario y Acento.
+   - **Data Tracking:** Campos sanitizados para Google Tag Manager ID, Meta Pixel ID, TikTok Pixel ID, Microsoft Clarity ID y cajas para Scripts Personalizados en `<head>` y antes del cierre de `<body>`.
+   - **SEO Global:** Meta Título por defecto, Meta Descripción, Imagen OpenGraph y componente de **Vista Previa de Google SERP** en tiempo real.
+
+4. **Redirecciones 301 con Caché de Alto Rendimiento:**
+   - Crear el recurso `Redirect301Resource` para mapear URLs antiguas hacia el nuevo sitio.
+   - Implementar un mapa en memoria en caché (`active_301_redirects`) para que el middleware no realice consultas directas a la base de datos en cada petición.
+   - Configurar la **invalidación automática** del caché mediante eventos en el modelo `Redirect301` (`saved`, `deleted`, `restored`).
+   - Agregar una acción en la cabecera de la tabla para **limpiar y regenerar el caché manualmente** en 1 clic.
+
+5. **Editor de Archivos Sandbox (Solo SuperAdmin / Administrador):**
    - Crea una vista administrativa restringida que permita editar ÚNICAMENTE el archivo `public/css/custom-override.css`.
-   - Bloquea estrictamente cualquier intento de navegación fuera de esta ruta (Sandboxing).
-5. **Seguridad en Uploads:**
+   - Bloquea estrictamente cualquier intento de navegación fuera de esta ruta o directory traversal (`../`).
+
+6. **Seguridad en Uploads:**
    - Configura el servicio de almacenamiento para que las imágenes subidas se procesen con `Intervention Image`, se conviertan a formato WebP, se renombran con UUID y se almacenen en `storage/app/public/`.
-   - Crea el archivo `.htaccess` de protección dentro de storage.
-
-
-Genera todo el código necesario respetando las normas de seguridad.
+   - Asegura la existencia del archivo `.htaccess` de protección dentro de storage que bloquee la ejecución de scripts CGI/PHP.

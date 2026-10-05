@@ -1,24 +1,28 @@
-﻿Lee atentamente el archivo `INSTRUCCIONES_IA.md` ubicado en la raíz del proyecto.
-Actúa como un Desarrollador Senior en Laravel y ejecuta la FASE 1 con los siguientes pasos:
+Lee atentamente el archivo `INSTRUCCIONES_IA.md` ubicado en la raíz del proyecto.
+Actúa como un Desarrollador Senior en Laravel y ejecuta la FASE 1 consumiendo los valores de las variables definidas en la Sección 1 (`NOMBRE_SITIO`, `TIPO_NEGOCIO`, `UBICACION`, etc.):
 
-
-1. Configura el entorno local en Laravel Herd con PHP 8.2+ y MySQL 8.0+.
+1. Configura el entorno local según las variables de entorno especificadas.
 2. Instala los paquetes base vía Composer:
    - `spatie/laravel-permission`
    - `spatie/laravel-activitylog`
    - `spatie/laravel-sluggable`
    - `intervention/image`
-3. Crea las Migraciones, Modelos, Factories y Seeders para las siguientes entidades. TODOS los modelos deben implementar el Trait `SoftDeletes`:
-   - `Category` (nombre, slug, status)
-   - `Promotion` (titulo, slug, descripcion, imagen, banner, fecha_inicio, fecha_fin, es_promocion_del_dia, sucursal_id, status)
+3. Crea las Migraciones, Modelos, Factories y Seeders para las siguientes entidades. TODOS los modelos deben implementar el Trait `SoftDeletes` (`deleted_at`) y registrar auditoría con `LogsActivity`:
+   - `Category` (nombre, slug, descripcion, status)
+   - `Promotion` (titulo, slug, descripcion, imagen, banner, pdf_volante, fecha_inicio, fecha_fin, es_promocion_del_dia, category_id, sucursal_id, status, meta_title, meta_description)
    - `Event` (titulo, slug, descripcion, imagen, fecha_evento, lugar, status)
-   - `Branch` (nombre, direccion, ciudad, telefono, email, mapa_lat, mapa_lng, horarios, status)
-   - `Page` (titulo, slug, contenido_json_bloques, status, meta_title, meta_description, schema_json)
-   - `MenuItem` (titulo, url, orden, ubicacion [header/footer], parent_id)
+   - `Branch` (nombre, slug, direccion, ciudad, telefono, email, mapa_lat, mapa_lng, horarios, status)
+   - `Page` (titulo, slug, contenido_json_bloques, plantilla [default 'app'], status, meta_title, meta_description, schema_json)
+   - `MenuItem` (titulo, url, orden, ubicacion [header/footer], parent_id, status)
    - `Setting` (clave, valor, grupo [branding, tracking, seo_global])
    - `Redirect301` (url_origen, url_destino, status)
-4. Configura las reglas `UNIQUE` en las migraciones considerando `deleted_at` para evitar colisiones de SoftDeletes.
-5. Prepara un Seeder inicial con los datos de branding base para "Marcsol", los colores corporativos HEX y las sucursales de Quevedo.
-
+4. Crea una migración dedicada para añadir índices de alto rendimiento en campos de búsqueda frecuente:
+   - Índices en status, combinaciones (`status`, `es_promocion_del_dia`), claves foráneas (`*_id`), slugs y campos de ordenación.
+5. Configura las reglas `UNIQUE` en las migraciones considerando `deleted_at` para evitar colisiones de SoftDeletes al restaurar o recrear registros.
+6. Prepara un Seeder inicial parametrizado:
+   - No quemes nombres en el seeder; consume las variables del proyecto para crear el usuario SuperAdmin inicial (`admin@{{NOMBRE_SITIO_LOWER}}.com`).
+   - Registra en `settings` los colores corporativos HEX, el nombre del sitio y metadatos SEO por defecto.
+   - Crea registros de demostración consistentes con el `TIPO_NEGOCIO` y la `UBICACION` definidos en `INSTRUCCIONES_IA.md`.
+   - Crea los menús iniciales de Header y Footer enlazando las rutas públicas principales.
 
 Entrega el código limpio y libre de errores.

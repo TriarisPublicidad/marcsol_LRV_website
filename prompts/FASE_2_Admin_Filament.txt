@@ -1,18 +1,23 @@
-﻿Lee atentamente el archivo `INSTRUCCIONES_IA.md`.
+Lee atentamente el archivo `INSTRUCCIONES_IA.md`.
 Continuando con el proyecto, ejecuta la FASE 2 correspondiente al Panel Administrativo:
 
-
-1. Instala y configura FilamentPHP v3 para el panel de administración (`/admin`).
+1. Instala y configura FilamentPHP para el panel de administración (`/admin`):
+   - Configura el soporte completo para español (`lang/es.json`).
+   - Define el título del panel dinámicamente utilizando la variable `NOMBRE_SITIO` de `INSTRUCCIONES_IA.md`.
 2. Configura el sistema de Roles y Permisos con Spatie:
-   - Crear roles: `SuperAdmin`, `Administrador`, `Supervisor`, `Operador`.
-   - Protege los recursos y navegación del panel según las políticas de autorización (`Policies`).
-3. Construye los recursos CRUD en FilamentPHP con tablas (paginación, filtros por status, búsqueda) y formularios estructurados para:
-   - **Promociones:** Incluyendo un switch destacado para "Promoción del Día" y rango de fechas de vigencia.
-   - **Eventos:** Con selector de fechas y ubicación.
-   - **Sucursales:** Con campos de dirección y coordenadas GPS.
+   - Crear roles jerárquicos: `SuperAdmin`, `Administrador`, `Supervisor`, `Operador`.
+   - Protege los recursos y la navegación del panel según las políticas de autorización (`Policies`).
+3. Construye los recursos CRUD en FilamentPHP con tablas interactivas (paginación, filtros por status, búsqueda) y formularios estructurados:
+   - **Promociones:** Con switch destacado para "Promoción del Día" / Oferta Destacada, rango de fechas de vigencia y botón en la tabla para "Ver en la Web" (abrir URL pública).
+   - **Eventos:** Con selector de fechas, carga de imagen y campo de lugar.
+   - **Sucursales:** Con campos de dirección, teléfonos, horarios y coordenadas de mapa.
    - **Usuarios:** Gestión de cuentas y asignación de roles Spatie.
-4. Aplica el comportamiento de `SoftDeletes` en Filament: las acciones de eliminar solo deben inactivar el registro (`deleted_at`). Agrega un filtro opcional para ver papelera/inactivos.
-5. Registra las acciones de edición e inactivación automáticamente en Spatie Activitylog.
-
-
-Asegúrate de que la interfaz sea rápida, limpia y totalmente en español.
+4. Aplica la gestión integral de `SoftDeletes` en Filament:
+   - Configura pestañas en las tablas ("Todos", "Activos", "Papelera / Inactivos").
+   - Para registros en papelera, agrega la acción de **Restaurar** en 1 clic.
+   - El borrado forzado definitivo (`forceDelete`) debe estar restringido exclusivamente al rol `SuperAdmin`.
+5. Visualizador de Auditoría con Spatie Activitylog:
+   - Crea el recurso `ActivityLogResource` en el admin.
+   - Muestra el usuario responsable, el modelo modificado y un modal con el **DIFF de atributos** comparando el valor anterior contra el valor nuevo.
+6. Ergonomía visual:
+   - Asegura padding y espaciado consistente entre campos de formularios para una interfaz limpia, cómoda y sin elementos comprimidos.

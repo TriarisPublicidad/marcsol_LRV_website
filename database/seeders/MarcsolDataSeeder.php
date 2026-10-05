@@ -220,6 +220,62 @@ class MarcsolDataSeeder extends Seeder
         // 6. Páginas CMS con Bloques JSON
         $pages = [
             [
+                'titulo' => 'Página Principal (Inicio)',
+                'slug' => 'inicio',
+                'status' => true,
+                'meta_title' => 'Marcsol Supermercado Corporativo | Quevedo - Ecuador',
+                'meta_description' => 'Encuentra las mejores ofertas del día, carnes frescas, víveres y productos para tu hogar y empresa en Marcsol Quevedo.',
+                'contenido_json_bloques' => [
+                    [
+                        'type' => 'hero',
+                        'data' => [
+                            'titulo' => 'Tu Ahorro Diario en Marcsol',
+                            'subtitulo' => 'Alimentos frescos, carnes seleccionadas, abarrotes y precios especiales para familias y empresas. ¡Visita nuestras 3 sucursales en Quevedo!',
+                            'boton_texto' => 'Explorar Ofertas',
+                            'boton_url' => '/promociones',
+                        ],
+                    ],
+                    [
+                        'type' => 'categorias',
+                        'data' => [
+                            'titulo' => 'Variedad en Todas las Secciones',
+                            'subtitulo' => 'Explora nuestras categorías de productos seleccionados con calidad garantizada.',
+                        ],
+                    ],
+                    [
+                        'type' => 'grid_promociones',
+                        'data' => [
+                            'titulo' => 'Nuestras Ofertas Destacadas',
+                            'subtitulo' => 'Ahorra en cada compra con nuestras ofertas semanales en Quevedo.',
+                            'limite' => 6,
+                            'solo_destacadas' => false,
+                        ],
+                    ],
+                    [
+                        'type' => 'eventos',
+                        'data' => [
+                            'titulo' => 'Próximos Eventos y Noticias en Quevedo',
+                            'subtitulo' => 'Participa en degustaciones, activaciones y ferias en nuestras sucursales.',
+                            'limite' => 3,
+                        ],
+                    ],
+                    [
+                        'type' => 'sucursales',
+                        'data' => [
+                            'titulo' => 'Nuestras Sucursales en Quevedo',
+                            'subtitulo' => 'Visítanos en cualquiera de nuestros 3 puntos estratégicos en la ciudad.',
+                        ],
+                    ],
+                    [
+                        'type' => 'beneficios',
+                        'data' => [
+                            'titulo' => '¿Por qué comprar en Marcsol?',
+                            'subtitulo' => 'Compromiso constante con la calidad, el ahorro y las familias de Quevedo.',
+                        ],
+                    ],
+                ],
+            ],
+            [
                 'titulo' => 'Nosotros',
                 'slug' => 'nosotros',
                 'status' => true,

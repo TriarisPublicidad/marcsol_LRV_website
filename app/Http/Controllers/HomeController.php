@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Branch;
 use App\Models\Category;
 use App\Models\Event;
+use App\Models\Page;
 use App\Models\Promotion;
 use Illuminate\View\View;
 
@@ -12,6 +13,8 @@ class HomeController extends Controller
 {
     public function index(): View
     {
+        $page = Page::active()->where('slug', 'inicio')->first();
+
         $promoDelDia = Promotion::active()
             ->where('es_promocion_del_dia', true)
             ->with(['category', 'branch'])
@@ -21,17 +24,17 @@ class HomeController extends Controller
         $promociones = Promotion::active()
             ->with(['category', 'branch'])
             ->latest()
-            ->take(6)
+            ->take(12)
             ->get();
 
         $eventos = Event::upcoming()
             ->with('branch')
-            ->take(3)
+            ->take(6)
             ->get();
 
         $sucursales = Branch::where('status', true)->get();
         $categorias = Category::where('status', true)->withCount('promotions')->get();
 
-        return view('frontend.home', compact('promoDelDia', 'promociones', 'eventos', 'sucursales', 'categorias'));
+        return view('frontend.home', compact('page', 'promoDelDia', 'promociones', 'eventos', 'sucursales', 'categorias'));
     }
 }

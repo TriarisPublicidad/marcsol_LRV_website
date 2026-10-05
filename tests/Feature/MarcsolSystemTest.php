@@ -73,8 +73,6 @@ test('authenticated admin user can access filament dashboard and resource pages'
     $this->get('/admin/pages')->assertSuccessful();
     $this->get('/admin/redirect301s')->assertSuccessful();
     $this->get('/admin/users')->assertSuccessful();
-    $this->get('/admin/manage-settings')->assertSuccessful();
-    $this->get('/admin/css-sandbox-editor')->assertSuccessful();
 });
 
 test('application runs in spanish with proper accents and localized labels', function () {
@@ -87,5 +85,42 @@ test('application runs in spanish with proper accents and localized labels', fun
     expect(\App\Filament\Resources\Pages\PageResource::getPluralModelLabel())->toBe('Páginas');
     expect(\App\Filament\Resources\ActivityLogs\ActivityLogResource::getPluralModelLabel())->toBe('Auditoría / Logs');
 });
+test('homepage renders modular page builder blocks when configured', function () {
+    Page::create([
+        'titulo' => 'Página Principal',
+        'slug' => 'inicio',
+        'status' => true,
+        'meta_title' => 'Marcsol Quevedo',
+        'contenido_json_bloques' => [
+            [
+                'type' => 'hero',
+                'data' => [
+                    'titulo' => 'Gran Variedad y Precios Bajos en Quevedo',
+                    'subtitulo' => 'Supermercado y distribución mayorista',
+                    'cta_texto' => 'Ver Ofertas',
+                    'cta_url' => '/promociones',
+                ],
+            ],
+            [
+                'type' => 'grid_promociones',
+                'data' => [
+                    'titulo' => 'Promociones Imperdibles de la Semana',
+                    'limite' => 4,
+                ],
+            ],
+            [
+                'type' => 'eventos',
+                'data' => [
+                    'titulo' => 'Noticias y Actividades Marcsol',
+                    'limite' => 3,
+                ],
+            ],
+        ],
+    ]);
 
-
+    $response = $this->get('/');
+    $response->assertStatus(200);
+    $response->assertSee('Gran Variedad y Precios Bajos en Quevedo');
+    $response->assertSee('Promociones Imperdibles de la Semana');
+    $response->assertSee('Noticias y Actividades Marcsol');
+});

@@ -25,8 +25,13 @@ class PagesTable
                 TextColumn::make('slug')
                     ->label('Ruta Web')
                     ->badge()
-                    ->color('gray')
-                    ->formatStateUsing(fn ($state) => "/{$state}"),
+                    ->color(fn ($state) => $state === 'inicio' ? 'warning' : 'gray')
+                    ->formatStateUsing(fn ($state) => $state === 'inicio' ? '/ (Portada Principal)' : "/{$state}"),
+                TextColumn::make('contenido_json_bloques')
+                    ->label('Bloques Modulares')
+                    ->badge()
+                    ->color('info')
+                    ->formatStateUsing(fn ($state) => is_array($state) ? count($state) . ' bloques' : '0 bloques'),
                 IconColumn::make('status')
                     ->label('Publicada')
                     ->boolean()

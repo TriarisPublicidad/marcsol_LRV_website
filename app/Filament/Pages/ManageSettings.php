@@ -12,7 +12,7 @@ use UnitEnum;
 
 class ManageSettings extends Page
 {
-    protected static string|UnitEnum|null $navigationGroup = 'Configuración & SEO';
+    protected static string|UnitEnum|null $navigationGroup = 'SEO & Sistema';
 
     protected static string|BackedEnum|null $navigationIcon = Heroicon::OutlinedCog6Tooth;
 
@@ -70,7 +70,7 @@ class ManageSettings extends Page
         $this->custom_body_scripts = (string) Setting::get('custom_body_scripts', '');
 
         $this->meta_title_default = (string) Setting::get('meta_title_default', 'Marcsol | Supermercado Corporativo');
-        $this->meta_description_default = (string) Setting::get('meta_description_default', 'Supermercado lÃ­der en Quevedo');
+        $this->meta_description_default = (string) Setting::get('meta_description_default', 'Supermercado líder en Quevedo');
         $this->schema_type = (string) Setting::get('schema_type', 'Supermarket');
     }
 
@@ -111,7 +111,7 @@ class ManageSettings extends Page
         Cache::forget('site_settings');
 
         Notification::make()
-            ->title('ConfiguraciÃ³n guardada con Ã©xito')
+            ->title('Configuración guardada con éxito')
             ->body('Los ajustes globales de Branding, Tracking y SEO han sido actualizados.')
             ->success()
             ->send();

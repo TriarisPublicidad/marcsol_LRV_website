@@ -75,3 +75,15 @@ test('authenticated admin user can access filament dashboard and resource pages'
     $this->get('/admin/users')->assertSuccessful();
 });
 
+test('application runs in spanish with proper accents and localized labels', function () {
+    expect(app()->getLocale())->toBe('es');
+    expect(__('auth.failed'))->toBe('Estas credenciales no coinciden con nuestros registros.');
+    expect(\App\Filament\Resources\Branches\BranchResource::getModelLabel())->toBe('Sucursal');
+    expect(\App\Filament\Resources\Branches\BranchResource::getPluralModelLabel())->toBe('Sucursales');
+    expect(\App\Filament\Resources\Categories\CategoryResource::getPluralModelLabel())->toBe('Categorías');
+    expect(\App\Filament\Resources\Promotions\PromotionResource::getPluralModelLabel())->toBe('Promociones');
+    expect(\App\Filament\Resources\Pages\PageResource::getPluralModelLabel())->toBe('Páginas');
+    expect(\App\Filament\Resources\ActivityLogs\ActivityLogResource::getPluralModelLabel())->toBe('Auditoría / Logs');
+});
+
+

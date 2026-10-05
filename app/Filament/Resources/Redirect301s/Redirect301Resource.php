@@ -15,12 +15,23 @@ use Filament\Support\Icons\Heroicon;
 use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
+use UnitEnum;
 
 class Redirect301Resource extends Resource
 {
     protected static ?string $model = Redirect301::class;
 
-    protected static string|BackedEnum|null $navigationIcon = Heroicon::OutlinedRectangleStack;
+    protected static string|BackedEnum|null $navigationIcon = Heroicon::OutlinedArrowPath;
+
+    protected static UnitEnum|string|null $navigationGroup = 'SEO & Sistema';
+
+    protected static ?string $modelLabel = 'Redirección 301';
+
+    protected static ?string $pluralModelLabel = 'Redirecciones 301';
+
+    protected static ?string $navigationLabel = 'Redirecciones 301';
+
+    protected static ?int $navigationSort = 2;
 
     public static function form(Schema $schema): Schema
     {

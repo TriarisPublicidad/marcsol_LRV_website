@@ -15,12 +15,23 @@ use Filament\Support\Icons\Heroicon;
 use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
+use UnitEnum;
 
 class PageResource extends Resource
 {
     protected static ?string $model = Page::class;
 
-    protected static string|BackedEnum|null $navigationIcon = Heroicon::OutlinedRectangleStack;
+    protected static string|BackedEnum|null $navigationIcon = Heroicon::OutlinedDocumentText;
+
+    protected static UnitEnum|string|null $navigationGroup = 'CMS & Contenido';
+
+    protected static ?string $modelLabel = 'Página';
+
+    protected static ?string $pluralModelLabel = 'Páginas';
+
+    protected static ?string $navigationLabel = 'Páginas';
+
+    protected static ?int $navigationSort = 1;
 
     public static function form(Schema $schema): Schema
     {

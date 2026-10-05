@@ -22,14 +22,14 @@ class PageFactory extends Factory
                     'data' => [
                         'titulo' => ucfirst($title),
                         'subtitulo' => $this->faker->sentence(),
-                        'boton_texto' => 'Conocer MÃ¡s',
+                        'boton_texto' => 'Conocer Más',
                         'boton_url' => '#',
                     ]
                 ],
                 [
                     'type' => 'texto_imagen',
                     'data' => [
-                        'titulo' => 'InformaciÃ³n Relevante',
+                        'titulo' => 'Información Relevante',
                         'contenido' => $this->faker->paragraph(4),
                         'posicion_imagen' => 'derecha',
                     ]

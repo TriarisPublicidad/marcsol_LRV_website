@@ -22,7 +22,9 @@ class ActivityLogResource extends Resource
 
     protected static ?string $modelLabel = 'Registro de Actividad';
 
-    protected static ?string $pluralModelLabel = 'AuditorÃ­a / Logs';
+    protected static ?string $pluralModelLabel = 'Auditoría / Logs';
+
+    protected static ?string $navigationLabel = 'Auditoría / Logs';
 
     protected static ?int $navigationSort = 2;
 
@@ -56,7 +58,7 @@ class ActivityLogResource extends Resource
                     ->label('ID Registro'),
                 TextColumn::make('causer.name')
                     ->label('Usuario Responsable')
-                    ->placeholder('Sistema / AutomÃ¡tico')
+                    ->placeholder('Sistema / Automático')
                     ->searchable(),
                 TextColumn::make('properties')
                     ->label('Atributos Modificados')

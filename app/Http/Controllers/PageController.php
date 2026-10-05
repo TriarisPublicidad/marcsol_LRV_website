@@ -12,7 +12,7 @@ class PageController extends Controller
     {
         $page = Page::active()->where('slug', $slug)->firstOrFail();
 
-        // En caso de que contenga el bloque 'grid_promociones', cargamos promociones dinÃ¡micamente
+        // En caso de que contenga el bloque 'grid_promociones', cargamos promociones dinámicamente
         $promociones = collect();
         if (is_array($page->contenido_json_bloques)) {
             foreach ($page->contenido_json_bloques as $bloque) {

@@ -11,7 +11,7 @@ use UnitEnum;
 
 class CssSandboxEditor extends Page
 {
-    protected static string|UnitEnum|null $navigationGroup = 'Configuración & SEO';
+    protected static string|UnitEnum|null $navigationGroup = 'SEO & Sistema';
 
     protected static string|BackedEnum|null $navigationIcon = Heroicon::OutlinedCodeBracket;
 
@@ -55,7 +55,7 @@ class CssSandboxEditor extends Page
         // Sandbox Estricto: La ruta es inmutable y siempre apunta exclusivamente a custom-override.css
         $targetFile = public_path('css/custom-override.css');
 
-        // SanitizaciÃ³n bÃ¡sica: evitar inyecciones peligrosas de expresiones o javascript en CSS
+        // Sanitización básica: evitar inyecciones peligrosas de expresiones o javascript en CSS
         $content = str_ireplace(['<script', '</script', '<?php', '?>', 'javascript:', 'expression('], '/* blocked */', $this->cssContent);
 
         File::put($targetFile, $content);

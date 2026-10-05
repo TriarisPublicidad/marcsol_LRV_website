@@ -31,6 +31,6 @@ class ContactController extends Controller
         // Registrar en logs del sistema
         Log::info('Nuevo mensaje de contacto web Marcsol', $validated);
 
-        return back()->with('success', 'Â¡Gracias por comunicarte con Marcsol! Tu mensaje ha sido recibido por nuestro equipo de atenciÃ³n y te responderemos a la brevedad.');
+        return back()->with('success', '¡Gracias por comunicarte con Marcsol! Tu mensaje ha sido recibido por nuestro equipo de atención y te responderemos a la brevedad.');
     }
 }

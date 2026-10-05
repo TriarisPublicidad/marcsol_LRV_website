@@ -15,12 +15,23 @@ use Filament\Support\Icons\Heroicon;
 use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
+use UnitEnum;
 
 class PromotionResource extends Resource
 {
     protected static ?string $model = Promotion::class;
 
-    protected static string|BackedEnum|null $navigationIcon = Heroicon::OutlinedRectangleStack;
+    protected static string|BackedEnum|null $navigationIcon = Heroicon::OutlinedSparkles;
+
+    protected static UnitEnum|string|null $navigationGroup = 'Gestión Comercial';
+
+    protected static ?string $modelLabel = 'Promoción';
+
+    protected static ?string $pluralModelLabel = 'Promociones';
+
+    protected static ?string $navigationLabel = 'Promociones';
+
+    protected static ?int $navigationSort = 3;
 
     public static function form(Schema $schema): Schema
     {

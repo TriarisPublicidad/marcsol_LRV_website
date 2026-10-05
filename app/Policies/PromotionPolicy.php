@@ -38,7 +38,7 @@ class PromotionPolicy
 
     public function delete(User $user, Promotion $promotion): bool
     {
-        // Solo Admin y Supervisor pueden inactivar/borrar lÃ³gicamente
+        // Solo Admin y Supervisor pueden inactivar/borrar lógicamente
         return $user->hasAnyRole(['SuperAdmin', 'Administrador', 'Supervisor']);
     }
 
@@ -49,7 +49,7 @@ class PromotionPolicy
 
     public function forceDelete(User $user, Promotion $promotion): bool
     {
-        // Estrictamente prohibido borrado fÃ­sico
+        // Estrictamente prohibido borrado físico
         return false;
     }
 }

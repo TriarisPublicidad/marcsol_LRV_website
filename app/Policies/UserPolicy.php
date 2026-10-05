@@ -37,7 +37,7 @@ class UserPolicy
 
     public function delete(User $user, User $model): bool
     {
-        // No permitir auto-eliminaciÃ³n
+        // No permitir auto-eliminación
         return $user->can('manage_users') && $user->id !== $model->id;
     }
 
@@ -48,7 +48,7 @@ class UserPolicy
 
     public function forceDelete(User $user, User $model): bool
     {
-        // Prohibido borrado fÃ­sico segÃºn reglas arquitectÃ³nicas
+        // Prohibido borrado físico según reglas arquitectónicas
         return false;
     }
 }

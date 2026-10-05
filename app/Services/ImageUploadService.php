@@ -35,7 +35,7 @@ class ImageUploadService
         // Procesar con Intervention Image
         $image = $this->manager->read($file->getRealPath());
 
-        // Redimensionar proporcionalmente si excede el ancho mÃ¡ximo
+        // Redimensionar proporcionalmente si excede el ancho máximo
         if ($maxWidth && $image->width() > $maxWidth) {
             $image->scale(width: $maxWidth);
         }
@@ -43,7 +43,7 @@ class ImageUploadService
         // Codificar a WebP
         $encoded = $image->toWebp($quality);
 
-        // Almacenar en disco pÃºblico
+        // Almacenar en disco público
         Storage::disk('public')->put($fullPath, (string) $encoded);
 
         return $fullPath;

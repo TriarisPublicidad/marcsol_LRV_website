@@ -15,12 +15,23 @@ use Filament\Support\Icons\Heroicon;
 use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
+use UnitEnum;
 
 class MenuItemResource extends Resource
 {
     protected static ?string $model = MenuItem::class;
 
-    protected static string|BackedEnum|null $navigationIcon = Heroicon::OutlinedRectangleStack;
+    protected static string|BackedEnum|null $navigationIcon = Heroicon::OutlinedBars3;
+
+    protected static UnitEnum|string|null $navigationGroup = 'CMS & Contenido';
+
+    protected static ?string $modelLabel = 'Elemento de Menú';
+
+    protected static ?string $pluralModelLabel = 'Menú de Navegación';
+
+    protected static ?string $navigationLabel = 'Menú de Navegación';
+
+    protected static ?int $navigationSort = 2;
 
     public static function form(Schema $schema): Schema
     {

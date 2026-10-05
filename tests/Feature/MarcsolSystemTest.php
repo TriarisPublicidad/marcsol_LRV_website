@@ -73,6 +73,8 @@ test('authenticated admin user can access filament dashboard and resource pages'
     $this->get('/admin/pages')->assertSuccessful();
     $this->get('/admin/redirect301s')->assertSuccessful();
     $this->get('/admin/users')->assertSuccessful();
+    $this->get('/admin/manage-settings')->assertSuccessful();
+    $this->get('/admin/css-sandbox-editor')->assertSuccessful();
 });
 
 test('application runs in spanish with proper accents and localized labels', function () {

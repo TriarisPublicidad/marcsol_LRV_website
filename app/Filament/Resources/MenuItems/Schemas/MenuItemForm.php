@@ -15,15 +15,21 @@ class MenuItemForm
         return $schema
             ->components([
                 Section::make('Detalle del Elemento de Menú')
+                    ->description('Configura los enlaces dinámicos de la barra de navegación y el pie de página.')
+                    ->columns(2)
                     ->components([
                         TextInput::make('titulo')
                             ->label('Texto Visible del Enlace')
+                            ->placeholder('Ej: Promociones')
                             ->required()
                             ->maxLength(255),
+
                         TextInput::make('url')
-                            ->label('Ruta o URL (ej: /promociones o https://...)')
+                            ->label('Ruta o URL')
+                            ->placeholder('/promociones o https://...')
                             ->required()
                             ->maxLength(255),
+
                         Select::make('ubicacion')
                             ->label('Ubicación del Menú')
                             ->options([
@@ -32,6 +38,7 @@ class MenuItemForm
                             ])
                             ->required()
                             ->default('header'),
+
                         Select::make('parent_id')
                             ->relationship('parent', 'titulo')
                             ->label('Elemento Padre (para Submenús)')
@@ -39,13 +46,15 @@ class MenuItemForm
                             ->nullable()
                             ->searchable()
                             ->preload(),
+
                         TextInput::make('orden')
                             ->label('Orden de Visualización')
                             ->numeric()
                             ->default(1)
                             ->required(),
+
                         Toggle::make('status')
-                            ->label('Elemento Visible')
+                            ->label('Elemento Visible en el Menú')
                             ->default(true),
                     ]),
             ]);

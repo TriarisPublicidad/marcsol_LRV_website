@@ -41,29 +41,87 @@ class ActivityLogResource extends Resource
                     ->label('Fecha / Hora')
                     ->dateTime('d/m/Y H:i:s')
                     ->sortable(),
+
                 TextColumn::make('description')
                     ->label('Evento')
                     ->badge()
+                    ->formatStateUsing(fn (string $state): string => match ($state) {
+                        'created' => 'Creado',
+                        'updated' => 'Actualizado',
+                        'deleted' => 'Eliminado',
+                        default => ucfirst($state),
+                    })
                     ->color(fn (string $state): string => match ($state) {
                         'created' => 'success',
                         'updated' => 'info',
                         'deleted' => 'danger',
                         default => 'gray',
                     }),
+
                 TextColumn::make('subject_type')
                     ->label('Modelo Afectado')
                     ->formatStateUsing(fn ($state) => class_basename($state))
-                    ->badge(),
+                    ->badge()
+                    ->color('gray'),
+
                 TextColumn::make('subject_id')
-                    ->label('ID Registro'),
+                    ->label('ID Registro')
+                    ->sortable(),
+
                 TextColumn::make('causer.name')
                     ->label('Usuario Responsable')
                     ->placeholder('Sistema / Automático')
                     ->searchable(),
+
                 TextColumn::make('properties')
                     ->label('Atributos Modificados')
-                    ->limit(50)
-                    ->toggleable(),
+                    ->formatStateUsing(function ($state, Activity $record): string {
+                        $props = $record->properties;
+                        if (! $props) {
+                            return 'Sin detalles';
+                        }
+
+                        $attributes = $props->get('attributes', []);
+                        $old = $props->get('old', []);
+
+                        if (! empty($old) && ! empty($attributes)) {
+                            $diff = array_keys(array_diff_assoc($attributes, $old));
+                            return ! empty($diff) ? implode(', ', $diff) : implode(', ', array_keys($attributes));
+                        }
+
+                        if (! empty($attributes)) {
+                            return implode(', ', array_keys($attributes));
+                        }
+
+                        if (! empty($old)) {
+                            return implode(', ', array_keys($old));
+                        }
+
+                        return 'Sin atributos';
+                    })
+                    ->limit(60)
+                    ->tooltip(fn ($state, Activity $record) => 'Haz clic en "Ver Cambios" para inspeccionar'),
+            ])
+            ->recordActions([
+                \Filament\Actions\Action::make('ver_cambios')
+                    ->label('Ver Cambios')
+                    ->icon(Heroicon::OutlinedEye)
+                    ->color('primary')
+                    ->modalHeading(fn (Activity $record) => 'Detalle de Auditoría: ' . class_basename($record->subject_type) . ' #' . $record->subject_id)
+                    ->modalDescription(fn (Activity $record) => 'Evento "' . ucfirst($record->description) . '" por ' . ($record->causer?->name ?? 'Sistema Automático') . ' el ' . $record->created_at->format('d/m/Y H:i:s'))
+                    ->modalContent(function (Activity $record) {
+                        $props = $record->properties;
+                        $attributes = $props ? $props->get('attributes', []) : [];
+                        $old = $props ? $props->get('old', []) : [];
+
+                        return view('filament.components.activity-log-diff', [
+                            'record' => $record,
+                            'attributes' => $attributes,
+                            'old' => $old,
+                        ]);
+                    })
+                    ->modalSubmitAction(false)
+                    ->modalCancelActionLabel('Cerrar Ventana'),
             ])
             ->defaultSort('created_at', 'desc');
     }

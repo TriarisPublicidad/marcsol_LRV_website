@@ -14,20 +14,26 @@ class Redirect301Form
         return $schema
             ->components([
                 Section::make('Configuración de Redirección 301 Permanente')
+                    ->description('Gestiona las migraciones SEO sin perder autoridad ni enlaces rotos.')
+                    ->columns(2)
                     ->components([
                         TextInput::make('url_origen')
                             ->label('URL de Origen')
                             ->placeholder('/ofertas-antiguas')
                             ->helperText('Ruta relativa que devolverá la redirección permanente 301.')
                             ->required(),
+
                         TextInput::make('url_destino')
                             ->label('URL de Destino')
                             ->placeholder('/promociones')
-                            ->helperText('Ruta relativa o URL externa a la que se dirigirá el usuario o bot de búsqueda.')
+                            ->helperText('Ruta relativa o URL externa de destino.')
                             ->required(),
+
                         Toggle::make('status')
                             ->label('Redirección Activa')
-                            ->default(true),
+                            ->helperText('Si se desactiva, la URL devolverá 404 en lugar de redirigir.')
+                            ->default(true)
+                            ->columnSpan(2),
                     ]),
             ]);
     }

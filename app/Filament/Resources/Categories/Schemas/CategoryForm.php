@@ -16,23 +16,33 @@ class CategoryForm
         return $schema
             ->components([
                 Section::make('Detalles de Categoría')
+                    ->description('Gestiona las secciones de productos y departamentos del supermercado.')
+                    ->columns(2)
                     ->components([
                         TextInput::make('nombre')
                             ->label('Nombre de Categoría')
+                            ->placeholder('Ej: Carnes y Embutidos')
                             ->required()
                             ->maxLength(255)
                             ->live(onBlur: true)
                             ->afterStateUpdated(fn ($state, callable $set) => $set('slug', Str::slug($state))),
+
                         TextInput::make('slug')
-                            ->label('Slug')
+                            ->label('Slug URL')
                             ->required()
                             ->unique(ignoreRecord: true),
+
                         Textarea::make('descripcion')
-                            ->label('Descripción')
-                            ->rows(3),
+                            ->label('Descripción de la Categoría')
+                            ->placeholder('Breve descripción de los productos incluidos en este departamento...')
+                            ->rows(3)
+                            ->columnSpan(2),
+
                         Toggle::make('status')
                             ->label('Categoría Activa')
-                            ->default(true),
+                            ->helperText('Visible en filtros y en los bloques de la portada.')
+                            ->default(true)
+                            ->columnSpan(2),
                     ]),
             ]);
     }

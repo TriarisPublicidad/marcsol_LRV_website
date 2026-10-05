@@ -18,7 +18,9 @@ class PromotionForm
     {
         return $schema
             ->components([
-                Section::make('Información de la Promoción')
+                Section::make('Detalles Principales de la Oferta')
+                    ->description('Define los productos, precios y sucursal de aplicación.')
+                    ->columns(2)
                     ->components([
                         TextInput::make('titulo')
                             ->label('Título de la Oferta')
@@ -26,46 +28,67 @@ class PromotionForm
                             ->maxLength(255)
                             ->live(onBlur: true)
                             ->afterStateUpdated(fn ($state, callable $set) => $set('slug', Str::slug($state))),
+
                         TextInput::make('slug')
-                            ->label('Slug')
+                            ->label('Slug URL')
                             ->required()
                             ->unique(ignoreRecord: true),
+
                         Select::make('category_id')
                             ->relationship('category', 'nombre')
-                            ->label('Categoría')
+                            ->label('Categoría / Departamento')
                             ->required()
                             ->searchable()
                             ->preload(),
+
                         Select::make('branch_id')
                             ->relationship('branch', 'nombre')
-                            ->label('Sucursal (opcional)')
+                            ->label('Sucursal Específica (Opcional)')
                             ->placeholder('Aplica a todas las sucursales')
                             ->nullable()
                             ->searchable()
                             ->preload(),
+
                         Textarea::make('descripcion')
                             ->label('Descripción / Beneficio de la Promoción')
                             ->required()
-                            ->rows(3),
-                        FileUpload::make('imagen')
-                            ->label('Arte / Banner de Promoción')
-                            ->image()
-                            ->directory('promotions')
-                            ->disk('public'),
+                            ->rows(3)
+                            ->columnSpan(2),
+                    ]),
+
+                Section::make('Vigencia y Visibilidad')
+                    ->description('Configura las fechas límites y si debe ser oferta del día.')
+                    ->columns(2)
+                    ->components([
                         DatePicker::make('fecha_inicio')
                             ->label('Fecha de Inicio')
                             ->default(now())
                             ->required(),
+
                         DatePicker::make('fecha_fin')
-                            ->label('Fecha de Fin')
+                            ->label('Fecha de Fin (Vencimiento)')
                             ->default(now()->addDays(7))
                             ->required(),
+
                         Toggle::make('es_promocion_del_dia')
                             ->label('Destacar como Oferta del Día (Hero)')
+                            ->helperText('Aparecerá en el banner principal de la portada.')
                             ->default(false),
+
                         Toggle::make('status')
                             ->label('Promoción Activa')
+                            ->helperText('Si se desmarca, no aparecerá en el portal web.')
                             ->default(true),
+                    ]),
+
+                Section::make('Arte Publicitario / Gráfico')
+                    ->description('Banner o fotografía del producto en oferta.')
+                    ->components([
+                        FileUpload::make('imagen')
+                            ->label('Arte / Fotografía de la Promoción')
+                            ->image()
+                            ->directory('promotions')
+                            ->disk('public'),
                     ]),
             ]);
     }

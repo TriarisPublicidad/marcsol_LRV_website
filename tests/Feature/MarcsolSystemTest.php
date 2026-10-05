@@ -124,3 +124,41 @@ test('homepage renders modular page builder blocks when configured', function ()
     $response->assertSee('Promociones Imperdibles de la Semana');
     $response->assertSee('Noticias y Actividades Marcsol');
 });
+
+test('pages can be moved to trash and restored', function () {
+    $page = Page::create([
+        'titulo' => 'Página Temporal',
+        'slug' => 'pagina-temporal',
+        'status' => true,
+    ]);
+
+    $page->delete();
+
+    expect($page->trashed())->toBeTrue();
+    expect(Page::onlyTrashed()->where('id', $page->id)->exists())->toBeTrue();
+
+    $page->restore();
+
+    expect($page->trashed())->toBeFalse();
+    expect(Page::where('id', $page->id)->exists())->toBeTrue();
+});
+
+test('admin can access page edit form with two-tier layout', function () {
+    $role = Role::create(['name' => 'SuperAdmin']);
+    $user = User::factory()->create([
+        'email' => 'admin-editor@marcsol.com.ec',
+    ]);
+    $user->assignRole($role);
+
+    $page = Page::create([
+        'titulo' => 'Políticas de Envíos',
+        'slug' => 'politicas-envios',
+        'status' => true,
+    ]);
+
+    $this->actingAs($user);
+
+    $this->get('/admin/pages/' . $page->id . '/edit')->assertSuccessful();
+    $this->get('/admin/activity-logs')->assertSuccessful();
+    $this->get('/admin/css-sandbox-editor')->assertSuccessful();
+});

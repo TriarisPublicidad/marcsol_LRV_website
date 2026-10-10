@@ -22,10 +22,11 @@ trait HasMediaUrls
 
         // Si es una ruta relativa que empieza por /storage/
         if (str_starts_with($path, '/storage/')) {
-            return asset($path);
+            return $path;
         }
 
-        // Si es una ruta relativa en el disco público (ej. media/sucursales/foto.webp)
-        return Storage::disk('public')->url($path);
+        // Si es una ruta relativa en el almacenamiento público (ej. media/sucursales/foto.webp)
+        return '/storage/' . ltrim($path, '/');
     }
 }
+

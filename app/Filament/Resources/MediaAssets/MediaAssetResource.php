@@ -57,3 +57,4 @@ class MediaAssetResource extends Resource
         ];
     }
 }
+

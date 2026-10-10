@@ -119,6 +119,56 @@ class MediaSecurityService
     }
 
     /**
+     * Asegura que el subdirectorio físico exista con permisos adecuados (0775).
+     */
+    public static function ensureDirectoryExists(string $folder, string $disk = 'public'): void
+    {
+        $storage = Storage::disk($disk);
+        if (! $storage->exists($folder)) {
+            $storage->makeDirectory($folder);
+        }
+
+        $fullPath = $storage->path($folder);
+        if (is_dir($fullPath) && ! str_starts_with(PHP_OS, 'WIN')) {
+            @chmod($fullPath, 0775);
+        }
+    }
+
+    /**
+     * Genera un nombre de archivo normalizado y seguro basado en el nombre original:
+     * - Remueve tildes y caracteres especiales mediante Str::slug().
+     * - Reemplaza espacios por guiones medios (-).
+     * - Convierte a minúsculas.
+     * - Preserva extensión limpia.
+     * - Si ya existe, añade un sufijo correlativo (-1, -2, etc.).
+     */
+    public static function generateSafeFileName(mixed $file, string $folder, string $disk = 'public'): string
+    {
+        self::ensureDirectoryExists($folder, $disk);
+
+        $clientName = method_exists($file, 'getClientOriginalName') ? $file->getClientOriginalName() : 'archivo';
+        $originalBase = pathinfo($clientName, PATHINFO_FILENAME);
+        $extension = strtolower(pathinfo($clientName, PATHINFO_EXTENSION));
+
+        // Normalizar con Str::slug (remueve tildes, caracteres raros y cambia espacios por -)
+        $slug = Str::slug($originalBase);
+        if (empty($slug)) {
+            $slug = 'archivo';
+        }
+
+        $storage = Storage::disk($disk);
+        $candidate = "{$slug}.{$extension}";
+        $counter = 1;
+
+        while ($storage->exists("{$folder}/{$candidate}")) {
+            $candidate = "{$slug}-{$counter}.{$extension}";
+            $counter++;
+        }
+
+        return $candidate;
+    }
+
+    /**
      * Extrae las dimensiones (ancho x alto) de una imagen de forma segura.
      */
     public static function getImageDimensions(string $filePath, string $disk = 'public'): array
@@ -141,3 +191,4 @@ class MediaSecurityService
         return ['ancho' => null, 'alto' => null];
     }
 }
+

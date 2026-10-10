@@ -21,8 +21,9 @@ class PromotionsTable
             ->columns([
                 ImageColumn::make('imagen')
                     ->label('Banner')
-                    ->disk('public')
-                    ->circular(),
+                    ->circular()
+                    ->defaultImageUrl(asset('images/media-placeholder.svg'))
+                    ->state(fn ($record) => $record->imagen_url),
                 TextColumn::make('titulo')
                     ->label('Promoción')
                     ->searchable()

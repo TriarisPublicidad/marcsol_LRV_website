@@ -2,6 +2,7 @@
 
 namespace App\Filament\Resources\Events\Pages;
 
+use App\Filament\Forms\Components\MediaPicker;
 use App\Filament\Resources\Events\EventResource;
 use Filament\Actions\DeleteAction;
 use Filament\Actions\ForceDeleteAction;
@@ -19,5 +20,10 @@ class EditEvent extends EditRecord
             ForceDeleteAction::make(),
             RestoreAction::make(),
         ];
+    }
+
+    protected function mutateFormDataBeforeSave(array $data): array
+    {
+        return MediaPicker::mutateData($data, 'imagen');
     }
 }

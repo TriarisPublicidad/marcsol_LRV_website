@@ -50,7 +50,7 @@ class MediaAssetForm
                             ->disk('public')
                             ->directory(fn ($get) => 'media/' . ($get('carpeta') ?: 'general'))
                             ->visibility('public')
-                            ->maxSize(51200) // 50MB
+                            ->maxSize(51200)
                             ->acceptedFileTypes([
                                 'image/jpeg',
                                 'image/png',
@@ -63,6 +63,11 @@ class MediaAssetForm
                                 'video/webm',
                                 'video/quicktime',
                             ])
+                            ->getUploadedFileNameForStorageUsing(function ($file, $get): string {
+                                $folder = 'media/' . ($get('carpeta') ?: 'general');
+
+                                return MediaSecurityService::generateSafeFileName($file, $folder, 'public');
+                            })
                             ->required()
                             ->columnSpanFull()
                             ->live()
@@ -125,3 +130,4 @@ class MediaAssetForm
             ]);
     }
 }
+

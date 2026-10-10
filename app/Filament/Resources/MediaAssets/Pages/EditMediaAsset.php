@@ -78,3 +78,4 @@ class EditMediaAsset extends EditRecord
         return $data;
     }
 }
+

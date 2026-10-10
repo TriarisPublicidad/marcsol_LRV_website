@@ -48,3 +48,4 @@ class CreateMediaAsset extends CreateRecord
         return $data;
     }
 }
+

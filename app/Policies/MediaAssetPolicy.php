@@ -51,3 +51,4 @@ class MediaAssetPolicy
         return $user->hasRole('SuperAdmin');
     }
 }
+

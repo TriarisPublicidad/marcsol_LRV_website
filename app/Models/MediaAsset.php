@@ -57,10 +57,10 @@ class MediaAsset extends Model
         }
 
         if (str_starts_with($this->archivo, '/storage/')) {
-            return asset($this->archivo);
+            return $this->archivo;
         }
 
-        return Storage::disk($this->disco ?? 'public')->url($this->archivo);
+        return '/storage/' . ltrim($this->archivo, '/');
     }
 
     public function getTamanoFormateadoAttribute(): string

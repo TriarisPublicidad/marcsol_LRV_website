@@ -68,8 +68,9 @@
             </a>
 
             <div class="flex items-center gap-3">
-                <a href="tel:{{ $settings['company_phone'] ?? '+59352759000' }}" class="hidden sm:inline-flex text-xs font-semibold text-gray-700 hover:text-marcsol-primary">
-                    📞 {{ $settings['company_phone'] ?? '+593 5 275 9000' }}
+                <a href="tel:{{ $settings['company_phone'] ?? '+59352759000' }}" class="hidden sm:inline-flex items-center gap-1.5 text-xs font-semibold text-gray-700 hover:text-marcsol-primary">
+                    <svg class="w-3.5 h-3.5 text-marcsol-primary" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.75" d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z"/></svg>
+                    <span>{{ $settings['company_phone'] ?? '+593 5 275 9000' }}</span>
                 </a>
                 <a href="https://wa.me/{{ preg_replace('/[^0-9]/', '', $settings['company_whatsapp'] ?? '593997654321') }}" target="_blank" rel="noopener" class="px-4 py-2 rounded-xl text-xs font-bold bg-emerald-600 hover:bg-emerald-500 text-white shadow transition-all flex items-center gap-1.5">
                     <span>Contactar Asesor</span>

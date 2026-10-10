@@ -347,3 +347,63 @@ test('authenticated admin can access media library filament index and create pag
         ->assertSee('Archivo y Ubicación');
 });
 
+test('media security service normalizes filenames removing accents spaces and symbols', function () {
+    \Illuminate\Support\Facades\Storage::fake('public');
+
+    $fileMock1 = new class {
+        public function getClientOriginalName(): string {
+            return 'Fachada Matriz Quevedo Edición 2026.JPG';
+        }
+    };
+
+    $safeName1 = MediaSecurityService::generateSafeFileName($fileMock1, 'media/sucursales', 'public');
+    expect($safeName1)->toBe('fachada-matriz-quevedo-edicion-2026.jpg');
+
+    // Simular que el archivo ya existe en disco
+    \Illuminate\Support\Facades\Storage::disk('public')->put('media/sucursales/' . $safeName1, 'dummy');
+
+    // Segundo archivo con el mismo nombre debe resolver colisión con sufijo -1
+    $fileMock2 = new class {
+        public function getClientOriginalName(): string {
+            return 'Fachada Matriz Quevedo Edición 2026.jpg';
+        }
+    };
+    $safeName2 = MediaSecurityService::generateSafeFileName($fileMock2, 'media/sucursales', 'public');
+    expect($safeName2)->toBe('fachada-matriz-quevedo-edicion-2026-1.jpg');
+
+    // Tercer archivo con caracteres especiales
+    $fileMock3 = new class {
+        public function getClientOriginalName(): string {
+            return '¡Super Promo & Descuento Especial! #1.png';
+        }
+    };
+    $safeName3 = MediaSecurityService::generateSafeFileName($fileMock3, 'media/promociones', 'public');
+    expect($safeName3)->toBe('super-promo-descuento-especial-1.png');
+});
+
+test('media asset url and has media urls trait return strictly root-relative paths without colons', function () {
+    $asset = MediaAsset::create([
+        'titulo' => 'Fachada Sucursal',
+        'archivo' => 'media/sucursales/fachada-matriz-quevedo-edicion-2026.jpg',
+        'carpeta' => 'sucursales',
+        'tipo' => 'imagen',
+    ]);
+
+    expect($asset->url)->toBe('/storage/media/sucursales/fachada-matriz-quevedo-edicion-2026.jpg');
+    expect($asset->url)->not->toContain(': ');
+    expect($asset->url)->not->toContain('http://');
+
+    $event = Event::create([
+        'titulo' => 'Festival Navideño',
+        'slug' => 'festival-navideno',
+        'descripcion' => 'Festival familiar en Quevedo',
+        'fecha_evento' => now()->addDays(5),
+        'lugar' => 'Sucursal Matriz',
+        'imagen' => 'media/eventos/afiche-navidad.jpg',
+        'status' => true,
+    ]);
+
+    expect($event->imagen_url)->toBe('/storage/media/eventos/afiche-navidad.jpg');
+});
+
+

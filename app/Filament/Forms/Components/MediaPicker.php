@@ -51,6 +51,11 @@ class MediaPicker
                     ->visibility('public')
                     ->maxSize(51200)
                     ->acceptedFileTypes($acceptedTypes)
+                    ->getUploadedFileNameForStorageUsing(function ($file) use ($subfolder): string {
+                        $folder = 'media/' . $subfolder;
+
+                        return \App\Services\MediaSecurityService::generateSafeFileName($file, $folder, 'public');
+                    })
                     ->helperText("El archivo se guardará de forma segura en /storage/media/{$subfolder}/")
                     ->visible(fn ($get) => ($get($origenField) ?? 'archivo') === 'archivo'),
 
@@ -91,3 +96,4 @@ class MediaPicker
         return $data;
     }
 }
+

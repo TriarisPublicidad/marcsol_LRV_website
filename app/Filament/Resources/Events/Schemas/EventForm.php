@@ -2,8 +2,8 @@
 
 namespace App\Filament\Resources\Events\Schemas;
 
+use App\Filament\Forms\Components\MediaPicker;
 use Filament\Forms\Components\DateTimePicker;
-use Filament\Forms\Components\FileUpload;
 use Filament\Forms\Components\Select;
 use Filament\Forms\Components\Textarea;
 use Filament\Forms\Components\TextInput;
@@ -60,16 +60,16 @@ class EventForm
                             ->columnSpan(2),
                     ]),
 
-                Section::make('Afiche y Publicación')
-                    ->description('Flyer promocional y estado de visibilidad en el portal.')
-                    ->columns(2)
-                    ->components([
-                        FileUpload::make('imagen')
-                            ->label('Afiche / Flyer del Evento')
-                            ->image()
-                            ->directory('events')
-                            ->disk('public'),
+                MediaPicker::make(
+                    fieldName: 'imagen',
+                    label: 'Afiche / Flyer del Evento',
+                    subfolder: 'eventos',
+                    description: 'Sube el afiche del evento (se guardará en /storage/media/eventos/) o ingresa una URL.'
+                ),
 
+                Section::make('Publicación y Visibilidad')
+                    ->description('Control de publicación en el portal y cartelera.')
+                    ->components([
                         Toggle::make('status')
                             ->label('Evento Activo y Publicado')
                             ->helperText('Visible en la cartelera de eventos y en la portada.')

@@ -27,10 +27,9 @@ class MediaAssetsTable
             ->columns([
                 ImageColumn::make('archivo')
                     ->label('Vista')
-                    ->disk('public')
+                    ->state(fn (MediaAsset $record) => $record->tipo === 'imagen' ? $record->url : null)
                     ->square()
                     ->size(50)
-                    ->visibility('public')
                     ->defaultImageUrl(asset('images/media-placeholder.svg')),
 
                 TextColumn::make('titulo')
@@ -144,3 +143,4 @@ class MediaAssetsTable
             ]);
     }
 }
+

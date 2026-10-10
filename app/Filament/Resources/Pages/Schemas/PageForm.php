@@ -3,6 +3,7 @@
 namespace App\Filament\Resources\Pages\Schemas;
 
 use App\Filament\Forms\Components\MediaPicker;
+use App\Services\MediaSecurityService;
 use Filament\Forms\Components\Builder;
 use Filament\Forms\Components\Builder\Block;
 use Filament\Forms\Components\FileUpload;
@@ -64,7 +65,8 @@ class PageForm
                                                 ->label('Imagen de Fondo (Opcional)')
                                                 ->image()
                                                 ->directory('media/paginas')
-                                                ->disk('public'),
+                                                ->disk('public')
+                                                ->getUploadedFileNameForStorageUsing(fn ($file): string => MediaSecurityService::generateSafeFileName($file, 'media/paginas', 'public')),
                                         ]),
 
                                     Block::make('promocion_del_dia')
@@ -114,7 +116,8 @@ class PageForm
                                                 ->label('Fotografía o Gráfico')
                                                 ->image()
                                                 ->directory('media/paginas')
-                                                ->disk('public'),
+                                                ->disk('public')
+                                                ->getUploadedFileNameForStorageUsing(fn ($file): string => MediaSecurityService::generateSafeFileName($file, 'media/paginas', 'public')),
                                             Select::make('posicion_imagen')
                                                 ->label('Posición de la Imagen')
                                                 ->options([

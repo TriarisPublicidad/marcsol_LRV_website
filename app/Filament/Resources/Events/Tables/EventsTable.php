@@ -20,8 +20,9 @@ class EventsTable
             ->columns([
                 ImageColumn::make('imagen')
                     ->label('Afiche')
-                    ->disk('public')
-                    ->circular(),
+                    ->circular()
+                    ->defaultImageUrl(asset('images/media-placeholder.svg'))
+                    ->state(fn ($record) => $record->imagen_url),
                 TextColumn::make('titulo')
                     ->label('Evento')
                     ->searchable()

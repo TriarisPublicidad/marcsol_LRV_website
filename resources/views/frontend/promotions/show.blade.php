@@ -19,10 +19,10 @@
     <div class="grid grid-cols-1 lg:grid-cols-12 gap-12 items-start">
         <!-- Imagen / Banner -->
         <div class="lg:col-span-6 bg-white p-4 rounded-3xl shadow-sm border border-gray-100">
-            @if($promocion->banner)
-                <img src="{{ asset('storage/' . $promocion->banner) }}" alt="{{ $promocion->titulo }}" class="w-full rounded-2xl object-cover shadow-sm">
-            @elseif($promocion->imagen)
-                <img src="{{ asset('storage/' . $promocion->imagen) }}" alt="{{ $promocion->titulo }}" class="w-full rounded-2xl object-cover shadow-sm">
+            @if($promocion->banner_url)
+                <img src="{{ $promocion->banner_url }}" alt="{{ $promocion->titulo }}" class="w-full rounded-2xl object-cover shadow-sm">
+            @elseif($promocion->imagen_url)
+                <img src="{{ $promocion->imagen_url }}" alt="{{ $promocion->titulo }}" class="w-full rounded-2xl object-cover shadow-sm">
             @else
                 <div class="h-80 bg-gray-50 rounded-2xl flex items-center justify-center text-marcsol-primary">
                     <svg class="w-16 h-16 opacity-30" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z"/></svg>
@@ -34,8 +34,9 @@
         <div class="lg:col-span-6 space-y-6">
             <div class="flex flex-wrap items-center gap-2">
                 @if($promocion->es_promocion_del_dia)
-                    <span class="px-3 py-1 rounded-full text-xs font-black uppercase tracking-wider bg-red-600 text-white shadow-sm">
-                        ⭐ Promoción del Día
+                    <span class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-black uppercase tracking-wider bg-red-600 text-white shadow-sm">
+                        <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11.049 2.927c.3-.921 1.603-.921 1.902 0l1.519 4.674a1 1 0 00.95.69h4.915c.969 0 1.371 1.24.588 1.81l-3.976 2.888a1 1 0 00-.363 1.118l1.518 4.674c.3.922-.755 1.688-1.538 1.118l-3.976-2.888a1 1 0 00-1.176 0l-3.976 2.888c-.783.57-1.838-.197-1.538-1.118l1.518-4.674a1 1 0 00-.363-1.118l-3.976-2.888c-.784-.57-.38-1.81.588-1.81h4.914a1 1 0 00.951-.69l1.519-4.674z"/></svg>
+                        <span>Promoción del Día</span>
                     </span>
                 @endif
                 @if($promocion->category)
@@ -43,8 +44,9 @@
                         {{ $promocion->category->nombre }}
                     </span>
                 @endif
-                <span class="px-3 py-1 rounded-full text-xs font-medium bg-gray-100 text-gray-700">
-                    📍 {{ $promocion->branch ? $promocion->branch->nombre : 'Todas las sucursales en Quevedo' }}
+                <span class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-medium bg-gray-100 text-gray-700">
+                    <svg class="w-3.5 h-3.5 text-gray-500 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.75" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"/><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.75" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"/></svg>
+                    <span>{{ $promocion->branch ? $promocion->branch->nombre : 'Todas las sucursales en Quevedo' }}</span>
                 </span>
             </div>
 
@@ -69,8 +71,8 @@
 
             <div class="pt-6 border-t border-gray-200 flex flex-wrap gap-4 items-center">
                 <!-- Botón Volante PDF -->
-                @if($promocion->pdf_volante)
-                    <a href="{{ asset('storage/' . $promocion->pdf_volante) }}" target="_blank" download class="px-6 py-3 rounded-xl text-sm font-bold bg-marcsol-primary hover:bg-blue-900 text-white shadow-md transition-all flex items-center gap-2">
+                @if($promocion->pdf_volante_url)
+                    <a href="{{ $promocion->pdf_volante_url }}" target="_blank" download class="px-6 py-3 rounded-xl text-sm font-bold bg-marcsol-primary hover:bg-blue-900 text-white shadow-md transition-all flex items-center gap-2">
                         <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/></svg>
                         Descargar Volante Digital (PDF)
                     </a>

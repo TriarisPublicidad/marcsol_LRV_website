@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Models\Concerns\HasMediaUrls;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
@@ -14,7 +15,7 @@ use Spatie\Sluggable\SlugOptions;
 
 class Event extends Model
 {
-    use HasFactory, SoftDeletes, HasSlug, LogsActivity;
+    use HasFactory, SoftDeletes, HasSlug, LogsActivity, HasMediaUrls;
 
     protected $fillable = [
         'titulo',
@@ -35,6 +36,15 @@ class Event extends Model
         'status' => 'boolean',
         'fecha_evento' => 'datetime',
     ];
+
+    protected $appends = [
+        'imagen_url',
+    ];
+
+    public function getImagenUrlAttribute(): ?string
+    {
+        return $this->resolveMediaUrl($this->imagen);
+    }
 
     public function getSlugOptions(): SlugOptions
     {

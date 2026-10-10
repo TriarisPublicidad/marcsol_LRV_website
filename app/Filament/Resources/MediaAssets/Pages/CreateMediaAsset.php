@@ -4,12 +4,25 @@ namespace App\Filament\Resources\MediaAssets\Pages;
 
 use App\Filament\Resources\MediaAssets\MediaAssetResource;
 use App\Services\MediaSecurityService;
+use Filament\Actions\Action;
 use Filament\Resources\Pages\CreateRecord;
+use Filament\Support\Icons\Heroicon;
 use Illuminate\Support\Facades\Storage;
 
 class CreateMediaAsset extends CreateRecord
 {
     protected static string $resource = MediaAssetResource::class;
+
+    protected function getHeaderActions(): array
+    {
+        return [
+            Action::make('volver')
+                ->label('Volver a Medios')
+                ->icon(Heroicon::OutlinedArrowLeft)
+                ->color('gray')
+                ->url(MediaAssetResource::getUrl('index')),
+        ];
+    }
 
     protected function mutateFormDataBeforeCreate(array $data): array
     {

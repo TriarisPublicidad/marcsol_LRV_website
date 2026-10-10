@@ -27,7 +27,17 @@ class MediaAssetsTable
             ->columns([
                 ImageColumn::make('archivo')
                     ->label('Vista')
-                    ->state(fn (MediaAsset $record) => $record->tipo === 'imagen' ? $record->url : null)
+                    ->disk('public')
+                    ->state(function (MediaAsset $record): ?string {
+                        if ($record->tipo !== 'imagen' || empty($record->archivo)) {
+                            return null;
+                        }
+                        if (str_starts_with($record->archivo, 'http://') || str_starts_with($record->archivo, 'https://')) {
+                            return $record->archivo;
+                        }
+
+                        return ltrim(preg_replace('#^/?storage/#', '', $record->archivo), '/');
+                    })
                     ->square()
                     ->size(50)
                     ->defaultImageUrl(asset('images/media-placeholder.svg')),

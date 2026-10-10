@@ -21,8 +21,18 @@ class EventsTable
                 ImageColumn::make('imagen')
                     ->label('Afiche')
                     ->circular()
-                    ->defaultImageUrl(asset('images/media-placeholder.svg'))
-                    ->state(fn ($record) => $record->imagen_url),
+                    ->disk('public')
+                    ->state(function ($record): ?string {
+                        if (empty($record->imagen)) {
+                            return null;
+                        }
+                        if (str_starts_with($record->imagen, 'http://') || str_starts_with($record->imagen, 'https://')) {
+                            return $record->imagen;
+                        }
+
+                        return ltrim(preg_replace('#^/?storage/#', '', $record->imagen), '/');
+                    })
+                    ->defaultImageUrl(asset('images/media-placeholder.svg')),
                 TextColumn::make('titulo')
                     ->label('Evento')
                     ->searchable()

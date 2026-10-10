@@ -17,6 +17,12 @@ class EditPage extends EditRecord
     protected function getHeaderActions(): array
     {
         return [
+            Action::make('volver')
+                ->label('Volver a Páginas')
+                ->icon(Heroicon::OutlinedArrowLeft)
+                ->color('gray')
+                ->url(PageResource::getUrl('index')),
+
             Action::make('visitar')
                 ->label('Ver en Web')
                 ->icon(Heroicon::OutlinedArrowTopRightOnSquare)

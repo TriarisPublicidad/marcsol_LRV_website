@@ -19,6 +19,12 @@ class EditMediaAsset extends EditRecord
     protected function getHeaderActions(): array
     {
         return [
+            Action::make('volver')
+                ->label('Volver a Medios')
+                ->icon(Heroicon::OutlinedArrowLeft)
+                ->color('gray')
+                ->url(MediaAssetResource::getUrl('index')),
+
             Action::make('ver')
                 ->label('Ver')
                 ->icon(Heroicon::OutlinedArrowTopRightOnSquare)

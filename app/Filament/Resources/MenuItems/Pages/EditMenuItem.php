@@ -3,10 +3,12 @@
 namespace App\Filament\Resources\MenuItems\Pages;
 
 use App\Filament\Resources\MenuItems\MenuItemResource;
+use Filament\Actions\Action;
 use Filament\Actions\DeleteAction;
 use Filament\Actions\ForceDeleteAction;
 use Filament\Actions\RestoreAction;
 use Filament\Resources\Pages\EditRecord;
+use Filament\Support\Icons\Heroicon;
 
 class EditMenuItem extends EditRecord
 {
@@ -15,6 +17,11 @@ class EditMenuItem extends EditRecord
     protected function getHeaderActions(): array
     {
         return [
+            Action::make('volver')
+                ->label('Volver a Menús')
+                ->icon(Heroicon::OutlinedArrowLeft)
+                ->color('gray')
+                ->url(MenuItemResource::getUrl('index')),
             DeleteAction::make(),
             ForceDeleteAction::make(),
             RestoreAction::make(),

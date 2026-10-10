@@ -3,10 +3,12 @@
 namespace App\Filament\Resources\Users\Pages;
 
 use App\Filament\Resources\Users\UserResource;
+use Filament\Actions\Action;
 use Filament\Actions\DeleteAction;
 use Filament\Actions\ForceDeleteAction;
 use Filament\Actions\RestoreAction;
 use Filament\Resources\Pages\EditRecord;
+use Filament\Support\Icons\Heroicon;
 
 class EditUser extends EditRecord
 {
@@ -15,6 +17,11 @@ class EditUser extends EditRecord
     protected function getHeaderActions(): array
     {
         return [
+            Action::make('volver')
+                ->label('Volver a Usuarios')
+                ->icon(Heroicon::OutlinedArrowLeft)
+                ->color('gray')
+                ->url(UserResource::getUrl('index')),
             DeleteAction::make(),
             ForceDeleteAction::make(),
             RestoreAction::make(),

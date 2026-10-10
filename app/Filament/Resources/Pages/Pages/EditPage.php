@@ -44,4 +44,9 @@ class EditPage extends EditRecord
                 ->color('success'),
         ];
     }
+
+    protected function mutateFormDataBeforeSave(array $data): array
+    {
+        return \App\Filament\Forms\Components\MediaPicker::mutateData($data, 'og_image');
+    }
 }

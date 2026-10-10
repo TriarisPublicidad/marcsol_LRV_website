@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Models\Concerns\HasMediaUrls;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
@@ -14,7 +15,7 @@ use Spatie\Sluggable\SlugOptions;
 
 class Promotion extends Model
 {
-    use HasFactory, SoftDeletes, HasSlug, LogsActivity;
+    use HasFactory, SoftDeletes, HasSlug, LogsActivity, HasMediaUrls;
 
     protected $fillable = [
         'titulo',
@@ -41,6 +42,27 @@ class Promotion extends Model
         'fecha_inicio' => 'datetime',
         'fecha_fin' => 'datetime',
     ];
+
+    protected $appends = [
+        'banner_url',
+        'imagen_url',
+        'pdf_volante_url',
+    ];
+
+    public function getBannerUrlAttribute(): ?string
+    {
+        return $this->resolveMediaUrl($this->banner);
+    }
+
+    public function getImagenUrlAttribute(): ?string
+    {
+        return $this->resolveMediaUrl($this->imagen);
+    }
+
+    public function getPdfVolanteUrlAttribute(): ?string
+    {
+        return $this->resolveMediaUrl($this->pdf_volante);
+    }
 
     public function getSlugOptions(): SlugOptions
     {

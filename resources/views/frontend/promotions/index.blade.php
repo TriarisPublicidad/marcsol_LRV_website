@@ -46,7 +46,7 @@
             <div class="flex items-center sm:pt-6">
                 <label class="inline-flex items-center cursor-pointer">
                     <input type="checkbox" name="solo_dia" value="1" onchange="this.form.submit()" {{ request('solo_dia') ? 'checked' : '' }} class="rounded border-gray-300 text-marcsol-secondary focus:ring-0">
-                    <span class="ml-2 text-xs font-bold text-gray-700">⭐ Solo Promo del Día</span>
+                    <span class="ml-2 text-xs font-bold text-gray-700">Solo Promo del Día</span>
                 </label>
             </div>
         </div>
@@ -65,8 +65,8 @@
         @forelse($promociones as $promo)
             <div class="bg-white rounded-2xl overflow-hidden shadow-sm hover:shadow-xl border border-gray-100 transition-all flex flex-col group">
                 <div class="relative h-48 bg-gray-100 overflow-hidden">
-                    @if($promo->imagen)
-                        <img src="{{ asset('storage/' . $promo->imagen) }}" alt="{{ $promo->titulo }}" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300">
+                    @if($promo->imagen_url)
+                        <img src="{{ $promo->imagen_url }}" alt="{{ $promo->titulo }}" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300">
                     @else
                         <div class="w-full h-full flex items-center justify-center bg-blue-50 text-marcsol-primary">
                             <svg class="w-12 h-12 opacity-30" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z"/></svg>
@@ -99,11 +99,13 @@
                     </div>
 
                     <div class="pt-4 border-t border-gray-100 flex items-center justify-between text-xs">
-                        <span class="text-gray-400">
-                            📍 {{ $promo->branch ? $promo->branch->nombre : 'Todas las sucursales' }}
+                        <span class="text-gray-400 flex items-center gap-1">
+                            <svg class="w-3.5 h-3.5 shrink-0 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"/><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"/></svg>
+                            {{ $promo->branch ? $promo->branch->nombre : 'Todas las sucursales' }}
                         </span>
-                        <a href="{{ url('/promociones/' . $promo->slug) }}" class="font-bold text-marcsol-primary group-hover:underline">
-                            Ver Detalle →
+                        <a href="{{ url('/promociones/' . $promo->slug) }}" class="font-bold text-marcsol-primary group-hover:underline flex items-center gap-1">
+                            <span>Ver Detalle</span>
+                            <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/></svg>
                         </a>
                     </div>
                 </div>

@@ -2,6 +2,7 @@
 
 namespace App\Filament\Resources\Promotions\Pages;
 
+use App\Filament\Forms\Components\MediaPicker;
 use App\Filament\Resources\Promotions\PromotionResource;
 use Filament\Actions\DeleteAction;
 use Filament\Actions\ForceDeleteAction;
@@ -19,5 +20,13 @@ class EditPromotion extends EditRecord
             ForceDeleteAction::make(),
             RestoreAction::make(),
         ];
+    }
+
+    protected function mutateFormDataBeforeSave(array $data): array
+    {
+        $data = MediaPicker::mutateData($data, 'imagen');
+        $data = MediaPicker::mutateData($data, 'pdf_volante');
+
+        return $data;
     }
 }

@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Models\Concerns\HasMediaUrls;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\HasMany;
@@ -13,7 +14,7 @@ use Spatie\Sluggable\SlugOptions;
 
 class Branch extends Model
 {
-    use HasFactory, SoftDeletes, HasSlug, LogsActivity;
+    use HasFactory, SoftDeletes, HasSlug, LogsActivity, HasMediaUrls;
 
     protected $fillable = [
         'nombre',
@@ -34,6 +35,15 @@ class Branch extends Model
         'mapa_lat' => 'decimal:7',
         'mapa_lng' => 'decimal:7',
     ];
+
+    protected $appends = [
+        'imagen_url',
+    ];
+
+    public function getImagenUrlAttribute(): ?string
+    {
+        return $this->resolveMediaUrl($this->imagen);
+    }
 
     public function getSlugOptions(): SlugOptions
     {

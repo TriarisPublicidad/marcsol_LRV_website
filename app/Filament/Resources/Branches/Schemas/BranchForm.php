@@ -2,6 +2,7 @@
 
 namespace App\Filament\Resources\Branches\Schemas;
 
+use App\Filament\Forms\Components\MediaPicker;
 use Filament\Forms\Components\TextInput;
 use Filament\Forms\Components\Toggle;
 use Filament\Schemas\Components\Section;
@@ -47,16 +48,23 @@ class BranchForm
                             ->default('Lunes a Sábado: 07:30 - 21:30 | Domingos: 08:00 - 20:00'),
                     ]),
 
+                MediaPicker::make(
+                    fieldName: 'imagen',
+                    label: 'Fotografía de la Sucursal',
+                    subfolder: 'sucursales',
+                    description: 'Sube la foto del local (guardada en /storage/media/sucursales/) o ingresa una URL.'
+                ),
+
                 Section::make('Geolocalización GPS y Estado')
                     ->description('Coordenadas para mapas interactivos y visibilidad.')
                     ->columns(2)
                     ->components([
-                        TextInput::make('latitud')
+                        TextInput::make('mapa_lat')
                             ->label('Latitud GPS')
                             ->numeric()
                             ->placeholder('-1.0254000'),
 
-                        TextInput::make('longitud')
+                        TextInput::make('mapa_lng')
                             ->label('Longitud GPS')
                             ->numeric()
                             ->placeholder('-79.4642000'),

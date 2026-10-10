@@ -2,6 +2,7 @@
 
 namespace App\Filament\Resources\Promotions\Schemas;
 
+use App\Filament\Forms\Components\MediaPicker;
 use Filament\Forms\Components\DatePicker;
 use Filament\Forms\Components\FileUpload;
 use Filament\Forms\Components\Select;
@@ -81,15 +82,20 @@ class PromotionForm
                             ->default(true),
                     ]),
 
-                Section::make('Arte Publicitario / Gráfico')
-                    ->description('Banner o fotografía del producto en oferta.')
-                    ->components([
-                        FileUpload::make('imagen')
-                            ->label('Arte / Fotografía de la Promoción')
-                            ->image()
-                            ->directory('promotions')
-                            ->disk('public'),
-                    ]),
+                MediaPicker::make(
+                    fieldName: 'imagen',
+                    label: 'Arte Publicitario / Fotografía de la Promoción',
+                    subfolder: 'promociones',
+                    description: 'Sube la imagen de la oferta (se guardará en /storage/media/promociones/) o ingresa una URL.'
+                ),
+
+                MediaPicker::make(
+                    fieldName: 'pdf_volante',
+                    label: 'Volante o Catálogo Digital en PDF',
+                    subfolder: 'documentos',
+                    description: 'Sube el volante en formato PDF (se guardará en /storage/media/documentos/) o ingresa una URL.',
+                    isPdf: true
+                ),
             ]);
     }
 }

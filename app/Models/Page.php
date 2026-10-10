@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Models\Concerns\HasMediaUrls;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
@@ -13,7 +14,7 @@ use Spatie\Sluggable\SlugOptions;
 
 class Page extends Model
 {
-    use HasFactory, SoftDeletes, HasSlug, LogsActivity;
+    use HasFactory, SoftDeletes, HasSlug, LogsActivity, HasMediaUrls;
 
     protected $fillable = [
         'titulo',
@@ -31,6 +32,15 @@ class Page extends Model
         'contenido_json_bloques' => 'array',
         'status' => 'boolean',
     ];
+
+    protected $appends = [
+        'og_image_url',
+    ];
+
+    public function getOgImageUrlAttribute(): ?string
+    {
+        return $this->resolveMediaUrl($this->og_image);
+    }
 
     public function getSlugOptions(): SlugOptions
     {

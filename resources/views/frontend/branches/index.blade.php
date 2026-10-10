@@ -17,15 +17,17 @@
         @foreach($sucursales as $sucursal)
             <div class="bg-white rounded-3xl overflow-hidden shadow-sm hover:shadow-xl border border-gray-100 transition-all flex flex-col justify-between group">
                 <div>
-                    @if($sucursal->imagen)
+                    @if($sucursal->imagen_url)
                         <div class="h-48 overflow-hidden bg-gray-100">
-                            <img src="{{ asset('storage/' . $sucursal->imagen) }}" alt="{{ $sucursal->nombre }}" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300">
+                            <img src="{{ $sucursal->imagen_url }}" alt="{{ $sucursal->nombre }}" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300">
                         </div>
                     @else
-                        <div class="h-48 bg-gradient-to-tr from-blue-900 to-indigo-900 flex items-center justify-center text-white">
-                            <div class="text-center">
-                                <span class="text-4xl">🏬</span>
-                                <h4 class="text-sm font-bold uppercase tracking-wider mt-2 opacity-80">Marcsol Quevedo</h4>
+                        <div class="h-48 bg-slate-800 flex items-center justify-center text-white">
+                            <div class="text-center text-slate-400">
+                                <svg class="w-12 h-12 mx-auto stroke-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" d="M13.5 21v-7.5a.75.75 0 01.75-.75h3a.75.75 0 01.75.75V21m-4.5 0H2.36m11.14 0H18m0 0h3.64m-1.39 0V9.349m-16.5 11.651V9.35m0 0a3.001 3.001 0 003.75-.614A2.993 2.993 0 009 9.35c.983-.913 2.502-.913 3.486 0a2.996 2.996 0 003.764 0 2.996 2.996 0 003.75.614m-16.5 0a3.004 3.004 0 01-.621-4.72L4.318 3.44A1.5 1.5 0 015.378 3h13.243a1.5 1.5 0 011.06.44l1.439 1.44a3.004 3.004 0 01-.62 4.72m-16.5 0c.315.293.714.46 1.135.474a2.986 2.986 0 001.365-.474m0 0a3 3 0 014 0m0 0a3 3 0 004 0m0 0a3 3 0 014 0" />
+                                </svg>
+                                <h4 class="text-xs font-semibold tracking-wider mt-2 uppercase text-slate-400">Marcsol Quevedo</h4>
                             </div>
                         </div>
                     @endif
@@ -44,8 +46,9 @@
                             </a>
                         </h3>
 
-                        <p class="text-xs text-gray-600 leading-relaxed">
-                            📍 <strong>Dirección:</strong> {{ $sucursal->direccion }}
+                        <p class="text-xs text-gray-600 leading-relaxed flex items-center gap-1.5">
+                            <svg class="w-4 h-4 text-marcsol-primary shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"/><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"/></svg>
+                            <span><strong>Dirección:</strong> {{ $sucursal->direccion }}</span>
                         </p>
 
                         <div class="bg-gray-50 p-4 rounded-2xl text-xs text-gray-600 space-y-2">

@@ -22,6 +22,7 @@ class RoleAndPermissionSeeder extends Seeder
             'manage_branches',
             'manage_pages',
             'manage_menus',
+            'manage_media',
             'manage_settings',
             'manage_redirects',
             'edit_sandbox_css',
@@ -44,6 +45,7 @@ class RoleAndPermissionSeeder extends Seeder
             'manage_branches',
             'manage_pages',
             'manage_menus',
+            'manage_media',
             'manage_settings',
             'manage_redirects',
             'edit_sandbox_css',
@@ -56,6 +58,7 @@ class RoleAndPermissionSeeder extends Seeder
             'manage_events',
             'manage_branches',
             'manage_pages',
+            'manage_media',
         ]);
 
         $operador = Role::firstOrCreate(['name' => 'Operador', 'guard_name' => 'web']);

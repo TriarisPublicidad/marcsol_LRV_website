@@ -3,11 +3,13 @@
 use App\Models\Branch;
 use App\Models\Category;
 use App\Models\Event;
+use App\Models\MediaAsset;
 use App\Models\MenuItem;
 use App\Models\Page;
 use App\Models\Promotion;
 use App\Models\Redirect301;
 use App\Models\User;
+use App\Services\MediaSecurityService;
 use Spatie\Permission\Models\Role;
 
 uses(\Illuminate\Foundation\Testing\RefreshDatabase::class);
@@ -255,5 +257,93 @@ test('dynamic page nosotros renders successfully with blocks and header navigati
     $response->assertSee('Nuestra Historia y Misión');
     $response->assertSee('Compañía');
     $response->assertSee('Nuestra Historia');
+});
+
+test('media security service blocks dangerous executable files and double extensions', function () {
+    expect(fn () => MediaSecurityService::validateFile('exploit.php', 'text/x-php'))
+        ->toThrow(InvalidArgumentException::class);
+
+    expect(fn () => MediaSecurityService::validateFile('shell.php.jpg', 'image/jpeg'))
+        ->toThrow(InvalidArgumentException::class);
+
+    expect(fn () => MediaSecurityService::validateFile('script.exe', 'application/x-msdownload'))
+        ->toThrow(InvalidArgumentException::class);
+
+    expect(fn () => MediaSecurityService::validateFile('archivo.sh', 'application/x-sh'))
+        ->toThrow(InvalidArgumentException::class);
+
+    // Archivos válidos no deben lanzar excepción
+    MediaSecurityService::validateFile('fachada-quevedo.webp', 'image/webp');
+    MediaSecurityService::validateFile('volante-semanal.pdf', 'application/pdf');
+    MediaSecurityService::validateFile('spot-marcsol.mp4', 'video/mp4');
+
+    expect(MediaSecurityService::detectMediaType('webp'))->toBe('imagen');
+    expect(MediaSecurityService::detectMediaType('pdf'))->toBe('pdf');
+    expect(MediaSecurityService::detectMediaType('mp4'))->toBe('video');
+});
+
+test('media asset model stores subfolder, calculates dimensions, size format, and handles soft deletes', function () {
+    $media = MediaAsset::create([
+        'titulo' => 'Fachada Sucursal Quevedo Centro',
+        'archivo' => 'media/sucursales/quevedo-centro.webp',
+        'disco' => 'public',
+        'carpeta' => 'sucursales',
+        'tipo' => 'imagen',
+        'mime_type' => 'image/webp',
+        'tamano_bytes' => 1572864, // 1.5MB
+        'ancho' => 1920,
+        'alto' => 1080,
+        'alt' => 'Fachada moderna de la sucursal Quevedo Centro',
+        'descripcion' => 'Local principal de Marcsol ubicado en la calle Bolívar.',
+    ]);
+
+    expect($media->url)->toContain('storage/media/sucursales/quevedo-centro.webp');
+    expect($media->tamano_formateado)->toBe('1.50 MB');
+    expect($media->dimensiones_texto)->toBe('1920 × 1080 px');
+    expect($media->carpeta)->toBe('sucursales');
+
+    $media->delete();
+    expect($media->trashed())->toBeTrue();
+    expect(MediaAsset::withTrashed()->where('id', $media->id)->exists())->toBeTrue();
+    expect(MediaAsset::where('id', $media->id)->exists())->toBeFalse();
+});
+
+test('has media urls trait resolves local media paths and external urls seamlessly', function () {
+    $localBranch = Branch::create([
+        'nombre' => 'Sucursal Local Storage',
+        'slug' => 'sucursal-local-storage',
+        'direccion' => 'Av. Walter Andrade',
+        'imagen' => 'media/sucursales/walter-andrade.webp',
+        'status' => true,
+    ]);
+
+    $externalBranch = Branch::create([
+        'nombre' => 'Sucursal CDN Externa',
+        'slug' => 'sucursal-cdn-externa',
+        'direccion' => 'Calle 7 de Octubre',
+        'imagen' => 'https://images.unsplash.com/photo-1578916171728-46686eac8d58',
+        'status' => true,
+    ]);
+
+    expect($localBranch->imagen_url)->toContain('storage/media/sucursales/walter-andrade.webp');
+    expect($externalBranch->imagen_url)->toBe('https://images.unsplash.com/photo-1578916171728-46686eac8d58');
+});
+
+test('authenticated admin can access media library filament index and create page', function () {
+    $role = Role::create(['name' => 'SuperAdmin']);
+    $user = User::factory()->create([
+        'email' => 'admin-media-lib@marcsol.com.ec',
+    ]);
+    $user->assignRole($role);
+
+    $this->actingAs($user)
+        ->get('/admin/media-assets')
+        ->assertStatus(200)
+        ->assertSee('Biblioteca de Medios');
+
+    $this->actingAs($user)
+        ->get('/admin/media-assets/create')
+        ->assertStatus(200)
+        ->assertSee('Archivo y Ubicación');
 });
 

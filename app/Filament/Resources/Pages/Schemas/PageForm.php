@@ -2,6 +2,7 @@
 
 namespace App\Filament\Resources\Pages\Schemas;
 
+use App\Filament\Forms\Components\MediaPicker;
 use Filament\Forms\Components\Builder;
 use Filament\Forms\Components\Builder\Block;
 use Filament\Forms\Components\FileUpload;
@@ -47,30 +48,34 @@ class PageForm
                 // 2. NIVEL 2: COLUMNA IZQUIERDA (CONTENIDO Y PAGEBUILDER - 8 COLUMNAS)
                 Group::make([
                     Section::make('Constructor Modular de Contenido (PageBuilder)')
-                        ->description('Diseña la página agregando, organizando y reordenando bloques flexibles con las flechas de posición (▲ / ▼).')
+                        ->description('Diseña la página agregando y reordenando bloques flexibles con las flechas de posición.')
                         ->components([
                             Builder::make('contenido_json_bloques')
                                 ->label('Bloques de la Página')
                                 ->blocks([
                                     Block::make('hero')
-                                        ->label('🚀 Hero Principal / Banner Cabecera')
+                                        ->label('Hero Principal / Banner Cabecera')
                                         ->schema([
                                             TextInput::make('titulo')->label('Título Principal')->required(),
                                             Textarea::make('subtitulo')->label('Subtítulo')->rows(2),
                                             TextInput::make('boton_texto')->label('Texto del Botón Principal (CTA)')->default('Explorar Ofertas'),
                                             TextInput::make('boton_url')->label('Enlace del Botón Principal')->default('/promociones'),
-                                            FileUpload::make('imagen_fondo')->label('Imagen de Fondo (Opcional)')->image()->directory('pages')->disk('public'),
+                                            FileUpload::make('imagen_fondo')
+                                                ->label('Imagen de Fondo (Opcional)')
+                                                ->image()
+                                                ->directory('media/paginas')
+                                                ->disk('public'),
                                         ]),
 
                                     Block::make('promocion_del_dia')
-                                        ->label('🔥 Promoción del Día Destacada')
+                                        ->label('Promoción del Día Destacada')
                                         ->schema([
                                             TextInput::make('titulo')->label('Título del Bloque')->default('Promoción del Día'),
                                             TextInput::make('subtitulo')->label('Subtítulo')->default('Oferta especial por tiempo limitado en nuestras sucursales'),
                                         ]),
 
                                     Block::make('grid_promociones')
-                                        ->label('🏷️ Catálogo / Grid de Promociones')
+                                        ->label('Catálogo / Cuadrícula de Promociones')
                                         ->schema([
                                             TextInput::make('titulo')->label('Título de la Sección')->default('Nuestras Ofertas Destacadas'),
                                             Textarea::make('subtitulo')->label('Subtítulo')->default('Ahorra en cada compra con nuestras ofertas semanales en Quevedo'),
@@ -79,7 +84,7 @@ class PageForm
                                         ]),
 
                                     Block::make('eventos')
-                                        ->label('📰 Noticias / Próximos Eventos y Activaciones')
+                                        ->label('Noticias / Próximos Eventos y Activaciones')
                                         ->schema([
                                             TextInput::make('titulo')->label('Título de la Sección')->default('Próximos Eventos y Noticias en Quevedo'),
                                             Textarea::make('subtitulo')->label('Subtítulo')->default('Participa en degustaciones, activaciones y ferias en nuestras sucursales'),
@@ -87,25 +92,29 @@ class PageForm
                                         ]),
 
                                     Block::make('categorias')
-                                        ->label('🛒 Secciones / Departamentos del Supermercado')
+                                        ->label('Secciones / Departamentos del Supermercado')
                                         ->schema([
                                             TextInput::make('titulo')->label('Título de la Sección')->default('Variedad en Todas las Secciones'),
                                             Textarea::make('subtitulo')->label('Subtítulo')->default('Explora nuestras categorías de productos seleccionados con calidad garantizada'),
                                         ]),
 
                                     Block::make('sucursales')
-                                        ->label('📍 Nuestras Sucursales en Quevedo')
+                                        ->label('Nuestras Sucursales en Quevedo')
                                         ->schema([
                                             TextInput::make('titulo')->label('Título de la Sección')->default('Nuestras Sucursales en Quevedo'),
                                             Textarea::make('subtitulo')->label('Subtítulo')->default('Visítanos en cualquiera de nuestros 3 puntos estratégicos en la ciudad'),
                                         ]),
 
                                     Block::make('texto_imagen')
-                                        ->label('💡 Sección Informativa (Texto con Imagen)')
+                                        ->label('Sección Informativa (Texto con Imagen)')
                                         ->schema([
                                             TextInput::make('titulo')->label('Título')->required(),
                                             Textarea::make('contenido')->label('Contenido / Párrafo descriptivo')->rows(4)->required(),
-                                            FileUpload::make('imagen')->label('Fotografía o Gráfico')->image()->directory('pages')->disk('public'),
+                                            FileUpload::make('imagen')
+                                                ->label('Fotografía o Gráfico')
+                                                ->image()
+                                                ->directory('media/paginas')
+                                                ->disk('public'),
                                             Select::make('posicion_imagen')
                                                 ->label('Posición de la Imagen')
                                                 ->options([
@@ -116,14 +125,14 @@ class PageForm
                                         ]),
 
                                     Block::make('beneficios')
-                                        ->label('⭐ Beneficios Corporativos (Por qué elegirnos)')
+                                        ->label('Beneficios Corporativos (Por qué elegirnos)')
                                         ->schema([
                                             TextInput::make('titulo')->label('Título de la Sección')->default('¿Por qué comprar en Marcsol?'),
                                             Textarea::make('subtitulo')->label('Subtítulo')->default('Compromiso constante con la calidad, el ahorro y las familias de Quevedo'),
                                         ]),
 
                                     Block::make('faqs')
-                                        ->label('❓ Preguntas Frecuentes (Acordeón FAQs)')
+                                        ->label('Preguntas Frecuentes (Acordeón FAQs)')
                                         ->schema([
                                             TextInput::make('titulo')->label('Título de la Sección FAQs')->default('Preguntas Frecuentes'),
                                             Repeater::make('items')
@@ -137,7 +146,7 @@ class PageForm
                                         ]),
 
                                     Block::make('banner_cta')
-                                        ->label('📢 Banner de Llamado a la Acción (CTA)')
+                                        ->label('Banner de Llamado a la Acción (CTA)')
                                         ->schema([
                                             TextInput::make('titulo')->label('Título del Banner')->required(),
                                             Textarea::make('subtitulo')->label('Subtítulo o Mensaje')->rows(2),
@@ -186,6 +195,13 @@ class PageForm
                                 ->helperText('Resumen descriptivo (máx 160 car.)')
                                 ->maxLength(160),
                         ]),
+
+                    MediaPicker::make(
+                        fieldName: 'og_image',
+                        label: 'Imagen Open Graph (Redes Sociales)',
+                        subfolder: 'paginas',
+                        description: 'Imagen destacada para compartir en WhatsApp, Facebook y Twitter (1200x630).'
+                    ),
                 ])
                 ->columnSpan(['default' => 12, 'lg' => 4]),
             ]);

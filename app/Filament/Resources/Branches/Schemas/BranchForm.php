@@ -2,6 +2,7 @@
 
 namespace App\Filament\Resources\Branches\Schemas;
 
+use Filament\Forms\Components\FileUpload;
 use Filament\Forms\Components\TextInput;
 use Filament\Forms\Components\Toggle;
 use Filament\Schemas\Components\Section;
@@ -51,12 +52,12 @@ class BranchForm
                     ->description('Coordenadas para mapas interactivos y visibilidad.')
                     ->columns(2)
                     ->components([
-                        TextInput::make('latitud')
+                        TextInput::make('mapa_lat')
                             ->label('Latitud GPS')
                             ->numeric()
                             ->placeholder('-1.0254000'),
 
-                        TextInput::make('longitud')
+                        TextInput::make('mapa_lng')
                             ->label('Longitud GPS')
                             ->numeric()
                             ->placeholder('-79.4642000'),
@@ -66,6 +67,18 @@ class BranchForm
                             ->helperText('Si se desmarca, la sucursal no se mostrará en los directorios públicos.')
                             ->default(true)
                             ->columnSpan(2),
+                    ]),
+
+                Section::make('Fotografía de la Sucursal')
+                    ->description('Imagen de la fachada o local comercial visible en el directorio web.')
+                    ->components([
+                        FileUpload::make('imagen')
+                            ->label('Foto de la Sucursal')
+                            ->image()
+                            ->directory('branches')
+                            ->disk('public')
+                            ->imageEditor()
+                            ->helperText('Sube una fotografía de la fachada o local (formatos WebP, JPG, PNG).'),
                     ]),
             ]);
     }

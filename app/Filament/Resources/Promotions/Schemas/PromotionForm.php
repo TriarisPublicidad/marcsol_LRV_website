@@ -81,14 +81,33 @@ class PromotionForm
                             ->default(true),
                     ]),
 
-                Section::make('Arte Publicitario / Gráfico')
-                    ->description('Banner o fotografía del producto en oferta.')
+                Section::make('Arte Publicitario y Material Promocional')
+                    ->description('Fotografía del producto, banner panorámico para encabezados y volante PDF descargable.')
+                    ->columns(2)
                     ->components([
                         FileUpload::make('imagen')
-                            ->label('Arte / Fotografía de la Promoción')
+                            ->label('Fotografía del Producto / Arte (Cuadrado o Vertical)')
                             ->image()
                             ->directory('promotions')
-                            ->disk('public'),
+                            ->disk('public')
+                            ->imageEditor()
+                            ->helperText('Visible en tarjetas de catálogo y portada.'),
+
+                        FileUpload::make('banner')
+                            ->label('Banner Horizontal / Panorámico (Cabecera)')
+                            ->image()
+                            ->directory('promotions/banners')
+                            ->disk('public')
+                            ->imageEditor()
+                            ->helperText('Visible en el encabezado de detalle de la oferta (16:9 o 21:9).'),
+
+                        FileUpload::make('pdf_volante')
+                            ->label('Volante / Catálogo de Ofertas en PDF (Descargable)')
+                            ->acceptedFileTypes(['application/pdf'])
+                            ->directory('promotions/volantes')
+                            ->disk('public')
+                            ->columnSpan(2)
+                            ->helperText('Los clientes podrán descargar este PDF desde la página de la promoción.'),
                     ]),
             ]);
     }

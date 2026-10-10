@@ -181,10 +181,17 @@ class PageForm
 
                             Textarea::make('meta_description')
                                 ->label('Meta Description')
-                                ->rows(4)
+                                ->rows(3)
                                 ->placeholder('Descripción atractiva para motores de búsqueda...')
                                 ->helperText('Resumen descriptivo (máx 160 car.)')
                                 ->maxLength(160),
+
+                            FileUpload::make('og_image')
+                                ->label('Imagen para Redes Sociales (OpenGraph)')
+                                ->image()
+                                ->directory('pages/og')
+                                ->disk('public')
+                                ->helperText('Aparecerá al compartir el enlace en WhatsApp, Facebook o Twitter (1200x630 px).'),
                         ]),
                 ])
                 ->columnSpan(['default' => 12, 'lg' => 4]),
